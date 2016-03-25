@@ -1,0 +1,14 @@
+.payments-transaction-summary {
+	display: table;
+	table-layout:fixed;
+	width: 100%;
+}
+.payments-transaction-summary > div {
+	display: table-cell;
+	vertical-align: middle;
+	padding: 5px;
+}
+.payments-transaction-method img {
+	width: auto;
+	height: 1em;
+}
