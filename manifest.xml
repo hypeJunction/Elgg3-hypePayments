@@ -23,4 +23,9 @@
 		<name>access_grant</name>
 	</requires>
 
+	<requires>
+		<type>php_extension</type>
+		<name>intl</name>
+	</requires>
+	
 </plugin_manifest>
