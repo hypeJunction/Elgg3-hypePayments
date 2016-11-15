@@ -28,7 +28,7 @@ class Menus {
 			]);
 		}
 
-		if ($status !== TransactionInterface::STATUS_FAILED && $status !== TransactionInterface::REFUNDED && $transaction->canEdit()) {
+		if ($status !== TransactionInterface::STATUS_FAILED && $status !== TransactionInterface::STATUS_REFUNDED && $transaction->canEdit()) {
 			$items[] = ElggMenuItem::factory([
 						'name' => 'log_payment',
 						'text' => elgg_echo('payments:transaction:log_payment'),
