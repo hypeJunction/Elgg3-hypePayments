@@ -3,19 +3,31 @@
 namespace hypeJunction\Payments;
 
 use ElggEntity;
-use ElggFile;
-use SebastianBergmann\Money\Currency;
-use SebastianBergmann\Money\Money;
+use ElggObject;
 
 /**
- * @property string $transaction_id   Unique ID of the transaction
- * @property string $payment_method   Payment method used for the transaction
- * @property string $status           Current payment status of the transaction
+ * @property string $transaction_id Unique ID of the transaction
+ * @property string $payment_method Payment method used for the transaction
+ * @property string $status         Current payment status of the transaction
  */
-class Transaction extends ElggFile implements TransactionInterface {
+class Transaction extends ElggObject implements TransactionInterface {
 
-	const CLASSNAME = __CLASS__;
 	const SUBTYPE = 'transaction';
+
+	/**
+	 * @var ElggEntity
+	 */
+	protected $customer;
+
+	/**
+	 * @var ElggEntity
+	 */
+	protected $merchant;
+
+	/**
+	 * @var array
+	 */
+	protected $details;
 
 	/**
 	 * {@inheritdoc}
@@ -28,40 +40,43 @@ class Transaction extends ElggFile implements TransactionInterface {
 	/**
 	 * {@inheritdoc}
 	 */
-	public static function factory(ElggEntity $customer, ElggEntity $merchant, $price_amount, $currency, array $data = []) {
-
-		$ia = elgg_set_ignore_access(true);
-
-		$site = elgg_get_site_entity();
-		$transaction_id = sha1(time() . rand(10000, 99999) . json_encode($data));
-
-		$transaction = new Transaction();
-		$transaction->owner_guid = $site->guid;
-		$transaction->container_guid = $site->guid;
-		$transaction->setFilename("transactions/$transaction_id.json");
-		$transaction->setMimeType('application/json');
-
-		$transaction->open('write');
-		$transaction->write(json_encode($data));
-		$transaction->close();
-
-		$transaction->transaction_id = $transaction_id;
-		$transaction->access_id = ACCESS_PRIVATE;
-
-		$guid = $transaction->save();
-
-		if ($guid) {
-			$transaction->setCustomer($customer);
-			$transaction->setMerchant($merchant);
-			$money = new Money($price_amount, new Currency($currency));
-			$transaction->setAmount($money->getAmount());
-			$transaction->setCurrency($money->getCurrency()->getCurrencyCode());
-			$transaction->save();
+	public function save() {
+		if (!isset($this->status)) {
+			$this->status = self::STATUS_NEW;
 		}
 
-		elgg_set_ignore_access($ia);
+		if (!$this->transaction_id) {
+			$this->transaction_id = sha1(time() . rand(10000, 99999) . serialize($this->getOrder()));
+		}
 
-		return $transaction;
+		$result = parent::save();
+
+		if ($result) {
+			if ($this->customer) {
+				add_entity_relationship($this->customer->guid, 'customer', $this->guid);
+			}
+
+			if ($this->merchant) {
+				add_entity_relationship($this->merchant->guid, 'merchant', $this->guid);
+			}
+		}
+
+		return $result;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setId($transaction_id) {
+		$this->transaction_id = $transaction_id;
+		return $this;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getId() {
+		return $this->transaction_id;
 	}
 
 	/**
@@ -75,12 +90,13 @@ class Transaction extends ElggFile implements TransactionInterface {
 
 		$transactions = elgg_get_entities_from_metadata([
 			'types' => 'object',
-			'subtypes' => self::SUBTYPE,
+			//'subtypes' => self::SUBTYPE,
 			'metadata_name_value_pairs' => [
 				'name' => 'transaction_id',
 				'value' => $transaction_id,
 			],
 			'limit' => 1,
+			'order_by' => 'e.time_created ASC',
 		]);
 
 		return $transactions ? $transactions[0] : false;
@@ -90,134 +106,282 @@ class Transaction extends ElggFile implements TransactionInterface {
 	 * {@inheritdoc}
 	 */
 	public function setStatus($status, array $params = []) {
-		$this->status = $status;
 		$params['entity'] = $this;
-		return elgg_trigger_plugin_hook("transaction:$status", 'payments', $params, true);
-	}
-
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getDetails($name = null) {
-		if (!isset($this->attributes['contents'])) {
-			$this->open('read');
-			$json = $this->grabFile();
-			$this->close();
-			$this->attributes['contents'] = json_decode($json, true);
+		if (elgg_trigger_plugin_hook("transaction:$status", 'payments', $params, true)) {
+			$this->status = $status;
 		}
+		return $this;
+	}
 
-		if (!$name) {
-			return $this->attributes['contents'];
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getStatus() {
+		return $this->status;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setOrder(OrderInterface $order) {
+		$this->order = serialize($order);
+		$this->setMerchant($order->getMerchant());
+		$this->setCustomer($order->getCustomer());
+		$this->setAmount($order->getTotalAmount());
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getOrder() {
+		if ($this->order) {
+			return unserialize($this->order);
 		}
-
-		return elgg_extract($name, $this->attributes['contents']);
+		return false;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setDetails($name, $value = null) {
-		$details = $this->getDetails();
-		$details[$name] = $value;
-		$this->open('write');
-		$this->write(json_encode($details));
-		$this->close();
-		$this->attributes['contents'] = $details;
+	public function addPayment(PaymentInterface $payment) {
+		$payments = (array) $this->payments;
+		$payments[] = serialize($payment);
+		$this->payments = $payments;
+		return $this;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function save() {
-		if (!isset($this->status)) {
-			$this->status = self::STATUS_NEW;
+	public function getPayments() {
+		$payments = (array) $this->payments;
+		foreach ($payments as &$child) {
+			$child = unserialize($child);
 		}
-		return parent::save();
+		return $payments;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setCustomer(ElggEntity $customer) {
-		add_entity_relationship($customer->guid, 'customer', $this->guid);
-		add_entity_relationship($this->guid, 'access_grant', $customer->guid);
-		$customer_export = (array) $customer->toObject();
-		$customer_export['_id'] = $customer->guid;
-		$this->setDetails('_customer', $customer_export);
+	public function refund() {
+		$params = ['entity' => $this];
+		elgg_trigger_plugin_hook('refund', 'payments', $params, false);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function setCustomer(ElggEntity $customer = null) {
+		$this->customer = $customer;
+		return $this;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function getCustomer() {
-		$customer = $this->getDetails('_customer');
-		return get_entity(elgg_extract('_id', $customer));
+		if ($this->getOrder()) {
+			return $this->getOrder()->getCustomer();
+		}
+		if (isset($this->customer)) {
+			return $this->customer;
+		}
+
+		$customer = elgg_get_entities_from_relationship([
+			'relationship' => 'customer',
+			'relationship_guid' => $this->guid,
+			'inverse_relationship' => true,
+			'limit' => 1,
+		]);
+		if (!$customer) {
+			return false;
+		}
+		$this->customer = array_shift($customer);
+		return $this->customer;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function setMerchant(ElggEntity $merchant) {
-		add_entity_relationship($merchant->guid, 'merchant', $this->guid);
-		add_entity_relationship($this->guid, 'access_grant', $merchant->guid);
-		$merchant_export = (array) $merchant->toObject();
-		$merchant_export['_id'] = $merchant->guid;
-		$this->setDetails('_merchant', $merchant_export);
+		$this->merchant = $merchant;
+		return $this;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function getMerchant() {
-		$merchant = $this->getDetails('_merchant');
-		return get_entity(elgg_extract('_id', $merchant));
+		if ($this->getOrder()) {
+			return $this->getOrder()->getMerchant();
+		}
+		if (isset($this->merchant)) {
+			return $this->merchant;
+		}
+
+		$merchant = elgg_get_entities_from_relationship([
+			'relationship' => 'merchant',
+			'relationship_guid' => $this->guid,
+			'inverse_relationship' => true,
+			'limit' => 1,
+		]);
+		if (!$merchant) {
+			return false;
+		}
+		$this->merchant = array_shift($merchant);
+		return $this->merchant;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setAmount($amount) {
-		$this->amount = $amount;
-		$this->setDetails('_total', $amount);
+	public function setAmount(Amount $amount) {
+		$this->amount = $amount->getAmount();
+		$this->currency = $amount->getCurrency();
+		return $this;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function getAmount() {
-		return $this->getDetails('_total');
+		return new Amount($this->amount, $this->currency);
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setCurrency($currency) {
-		$this->currency = $currency;
-		$this->setDetails('_currency', $currency);
+	public function setPaymentMethod($payment_method) {
+		$this->payment_method = $payment_method;
+		return $this;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getCurrency() {
-		return $this->getDetails('_currency');
+	public function getPaymentMethod() {
+		return $this->payment_method;
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getCommissionRate(GatewayInterface $interface) {
-		$merchant = $this->getMerchant();
-		if (!$merchant || $merchant->guid == elgg_get_site_entity()->guid) {
-			return 0;
+	public function setFundingSource(FundingSourceInterface $funding_source) {
+		$this->funding_source = serialize($funding_source);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getFundingSource() {
+		if ($this->funding_source) {
+			return unserialize($this->funding_source);
+		}
+		return $this->funding_source;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function serialize() {
+		return serialize($this->toArray());
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function unserialize($serialized) {
+		$data = unserialize($serialized);
+
+		$this->initializeAttributes();
+		if (!$data['_id'] || !$this->load($data['_id'])) {
+			if ($data['_order'] instanceof OrderInterface) {
+				$this->setOrder($data['_order']);
+			}
+			$this->payment_method = $data['_payment_method'];
+			$this->status = $data['_status'];
+			$this->amount = $data['_amount']->getAmount();
+			$this->currency = $data['_amount']->getCurrency();
+			$this->time_created = $data['_time_created'];
 		}
 
-		$params = [
-			'entity' => $this,
-			'gateway' => $interface,
-		];
+		if ($data['_merchant']) {
+			$merchant = get_entity($data['_merchant']['_id']);
+			if ($merchant) {
+				$this->setMerchant($merchant);
+			}
+		}
 
-		return elgg_trigger_plugin_hook('site_commission', 'payments', $params, 0);
+		if ($data['_customer']) {
+			$customer = get_entity($data['_customer']['_id']);
+			if ($customer) {
+				$this->setCustomer($customer);
+			}
+		}
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
+	public function toArray() {
+		$export = (array) $this->toObject();
+		$export['_id'] = $this->getId();
+		$export['_time_created'] = $this->time_created;
+		$export['_order'] = $this->getOrder();
+		$export['_amount'] = $this->getAmount();
+		$export['_payment_method'] = $this->getPaymentMethod();
+		$export['_status'] = $this->getStatus();
+		$export['_merchant'] = $this->getMerchant();
+		$export['_customer'] = $this->getCustomer();
+		return $this->prepareExport($export);
+	}
+
+	/**
+	 * Export entities
+	 *
+	 * @param mixed $val Value to export
+	 * @return mixed
+	 */
+	protected function prepareExport($val) {
+		if (is_array($val)) {
+			foreach ($val as &$elem) {
+				$elem = $this->prepareExport($elem);
+			}
+		} else if ($val instanceof ElggEntity) {
+			$export = (array) $val->toObject();
+			$export['_id'] = $val->guid;
+			$val = $export;
+		}
+
+		return $val;
+	}
+
+	/**
+	 * @deprecated 2.0
+	 */
+	public function getDetails($name = null) {
+		if (!isset($this->details)) {
+			$details = $this->getMetadata('details');
+			if ($details) {
+				$this->details = json_decode($details, true);
+			} else {
+				$this->details = [];
+			}
+		}
+		if (!$name) {
+			return $this->details;
+		}
+		return elgg_extract($name, $this->details);
+	}
+
+	/**
+	 * @deprecated 2.0
+	 */
+	public function setDetails($name, $value = null) {
+		$details = $this->getDetails();
+		$details[$name] = $value;
+		$this->details = $details;
+		$this->setMetadata('details', json_encode($details));
+	}
 }

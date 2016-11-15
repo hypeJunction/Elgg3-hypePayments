@@ -1,0 +1,26 @@
+<?php
+
+$guid = get_input('guid');
+$entity = get_entity($guid);
+
+if (!$entity instanceof hypeJunction\Payments\Transaction) {
+	$error = elgg_echo('payments:error:not_found');
+	return elgg_error_response($error, REFERRER, ELGG_HTTP_NOT_FOUND);
+}
+
+if (!$entity->canEdit()) {
+	$error = elgg_echo('payments:error:permissions');
+	return elgg_error_response($error, REFERRER, ELGG_HTTP_FORBIDDEN);
+}
+
+if (!$entity->refund()) {
+	$error = elgg_echo('payments:refund:error');
+	return elgg_error_response($error, REFERRER, ELGG_HTTP_UNPROCESSABLE_ENTITY);
+}
+
+$data = [
+	'entity' => 'transaction',
+	'action' => 'refund',
+];
+$message = elgg_echo('payments:refund:success');
+return elgg_ok_response($data, $message);

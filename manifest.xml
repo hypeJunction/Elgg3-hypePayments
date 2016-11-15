@@ -6,7 +6,7 @@
 
 	<description>Payments</description>
 	<category>commerce</category>
-	<version type="dist">1.0.1</version>
+	<version type="dist">2.0</version>
 
 	<author>Ismayil Khayredinov (info@hypejunction.com)</author>
 	<website>http://www.hypejunction.com/</website>
@@ -19,13 +19,8 @@
 	</requires>
 
 	<requires>
-		<type>plugin</type>
-		<name>access_grant</name>
-	</requires>
-
-	<requires>
 		<type>php_extension</type>
 		<name>intl</name>
 	</requires>
-	
+
 </plugin_manifest>

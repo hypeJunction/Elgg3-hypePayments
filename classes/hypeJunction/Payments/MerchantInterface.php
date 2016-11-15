@@ -2,7 +2,9 @@
 
 namespace hypeJunction\Payments;
 
-interface MerchantInterface {
+use Serializable;
+
+interface MerchantInterface extends Serializable {
 
 	/**
 	 * Returns Merchant id
@@ -11,17 +13,20 @@ interface MerchantInterface {
 	public function getId();
 
 	/**
+	 * Returns title
+	 * @return string
+	 */
+	public function getTitle();
+
+	/**
+	 * Returns description
+	 * @return string
+	 */
+	public function getDescription();
+
+	/**
 	 * Export
 	 * @return array
 	 */
 	public function toArray();
-
-	/**
-	 * Calculate charges on a given set of items
-	 * 
-	 * @param OrderInterface $order Order
-	 * @return ChargeInterface[]
-	 */
-	public function getCharges(OrderInterface $order);
-
 }

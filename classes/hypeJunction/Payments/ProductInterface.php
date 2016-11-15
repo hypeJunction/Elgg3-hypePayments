@@ -2,13 +2,15 @@
 
 namespace hypeJunction\Payments;
 
+use Serializable;
+
 /**
  * Product interface
  *
  * @property int    $price
  * @property string $currency
  */
-interface ProductInterface {
+interface ProductInterface extends Serializable {
 
 	/**
 	 * Returns Product id
@@ -17,49 +19,71 @@ interface ProductInterface {
 	public function getId();
 
 	/**
-	 * Returns merchant
+	 * Returns the merchant
 	 * @return MerchantInterface
 	 */
 	public function getMerchant();
 
 	/**
-	 * Normalizes and sets product price
-	 *
-	 * @param string $amount       Monetary value
-	 * @param string $currencyCode Currency
-	 * @return void
+	 * Returns title
+	 * @return string
 	 */
-	public function setPrice($amount, $currencyCode);
+	public function getTitle();
 
 	/**
-	 * Returns formatted price
+	 * Returns description
 	 * @return string
+	 */
+	public function getDescription();
+
+	/**
+	 * Normalizes and sets product price excluding charges
+	 *
+	 * @param Amount $price Price
+	 * @return void
+	 */
+	public function setPrice(Amount $price);
+
+	/**
+	 * Returns product price excluding charges
+	 * @return Amount
 	 */
 	public function getPrice();
 
 	/**
-	 * Returns monetary value
-	 * @return int
+	 * Returns product price including charges
+	 * @return Amount
 	 */
-	public function getPriceAmount();
+	public function getTotalPrice();
 
 	/**
-	 * Returns currency
-	 * @return string
+	 * Set charges that apply to the subtotal
+	 * Charges may include VAT, packaging, gift wrap etc.
+	 *
+	 * @param ChargeInterface[] $charges Charges
+	 * @return self
 	 */
-	public function getPriceCurrency();
+	public function setCharges($charges);
 
 	/**
-	 * Calculate charges on this item
+	 * Get charges that apply to the subtotal
 	 * @return ChargeInterface[]
 	 */
 	public function getCharges();
 
 	/**
-	 * Export to array suitable for order/order serialization
-	 * @param array
+	 * Add stock
+	 *
+	 * @param int $quantity Quantity to add
+	 * @return bool
 	 */
-	public function toArray();
+	public function addStock($quantity = 1);
+
+	/**
+	 * Returns current stock
+	 * @return int
+	 */
+	public function getStock();
 
 	/**
 	 * Check if item is in stock
@@ -70,10 +94,8 @@ interface ProductInterface {
 	public function inStock($quantity = 1);
 
 	/**
-	 * Returns images associated with this product
-	 *
-	 * @param array $options ege* options
-	 * @return ProductMediaInterface[]
+	 * Export to array suitable for order/order serialization
+	 * @param array
 	 */
-	public function getMedia(array $options = []);
+	public function toArray();
 }

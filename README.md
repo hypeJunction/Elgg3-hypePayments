@@ -4,15 +4,63 @@ Payments and sales API for Elgg
 
 ## Features
 
- * API for handling payments and product sales
- * Transaction history
+ * Standardized API for handling payments and product sales
+ * Interface for logging and refunding payments
 
-## Notes
 
- * Transactions are stored as JSON files on the filestore. The idea is to have all the
-data on file even after merchant, product or other entities are deleted from the system.
-For this reason, use of metadata is limited to `transaction_id` and `status`,
-and `merchant` and `customer` info are stored as relationships. Product info, subtotals and totals
-should be stored within the transaction file to avoid incomplete representation of the
-transaction in history.
+## Usage
+
+### New payment
+
+```php
+
+namespace hypeJunction\Payments;
+
+// First, we create an itemized order/invoice
+$order = new Order();
+$order->setCurrency('EUR');
+
+// Add a new product
+$order->add($product, 2);
+
+// Add additional fees and charges
+$shipping = Amount::fromString('25.25', 'EUR');
+$charges[] = new ShippingFee('shipping', 0, $shipping);
+
+$charges[] = new ProcessingFee('paypal_fee', 3.9);
+
+$order->setCharges($charges);
+
+$address = new Address();
+$address->street_address = 'Some street 25';
+// add other address parts
+$address->country_code = 'CZ';
+
+$order->setShippingAddress($address);
+
+// Now create a transaction
+$transaction = new Transaction();
+$transaction->setOrder($order);
+$transaction->setPaymentMethod('paypal');
+
+// Be sure to correctly set the owner and container and access id
+// to ensure that both the merchant and the customer have access
+// to the transaction entity
+$transaction->owner_guid = $payer->guid;
+$transaction->container_guid = $payee->guid;
+
+// You can use access_grant to give access to the merchant,
+// or create a new acccess collection that contains both the payer and the payee
+$transaction->access_id = ACCESS_PRIVATE;
+
+$transaction->save();
+
+// Instantiate a gateway of choice
+$gateway = new \hypeJunction\PayPal\API\Adapter();
+
+// What you do with response may depend on where you are executing
+// this code. From an action file, you can just return the $response.
+$response = $adapter->pay($transaction);
+
+```
 

@@ -3,31 +3,20 @@
 namespace hypeJunction\Payments;
 
 use ElggEntity;
-use stdClass;
+use Serializable;
 
 /**
  * Payment transaction interface
  */
-interface TransactionInterface {
+interface TransactionInterface extends Serializable {
 
 	const STATUS_NEW = 'new';
 	const STATUS_PAYMENT_PENDING = 'payment_pending';
 	const STATUS_PAID = 'paid';
 	const STATUS_REFUNDED = 'refunded';
-	const STATUS_FAILED = 'failed';
 	const STATUS_PARTIALLY_REFUNDED = 'partially_refunded';
-
-	/**
-	 * Create a new transaction
-	 *
-	 * @param ElggEntity $customer     Customer entity
-	 * @param ElggEntity $merchant     Merchant entity
-	 * @param string     $price_amount Monetary value of the transaction
-	 * @param string     $currency     Currency code of the transaction
-	 * @param array      $data         Transaction data
-	 * @return TransactionInterface
-	 */
-	public static function factory(ElggEntity $customer, ElggEntity $merchant, $price_amount, $currency, array $data = []);
+	const STATUS_REFUND_PENDING = 'refund_pending';
+	const STATUS_FAILED = 'failed';
 
 	/**
 	 * Load transaction from it's id
@@ -42,38 +31,77 @@ interface TransactionInterface {
 	 *
 	 * @param string $status Status
 	 * @param array  $params Additional params
-	 * @return bool
+	 * @return self
 	 */
 	public function setStatus($status, array $params = []);
 
 	/**
-	 * Add details of the transaction
-	 *
-	 * @param string $name  Name of the transaction attribute
-	 * @param mixed  $value Value
-	 * @return bool
+	 * Returns current status
+	 * @return string
 	 */
-	public function setDetails($name, $value = null);
+	public function getStatus();
 
 	/**
-	 * Get details of the transaction
-	 *
-	 * @param string $name Name of the attribute
-	 * @return mixed
+	 * Sets transaction ID
+	 * 
+	 * @param string $transaction_id ID
+	 * @return self
 	 */
-	public function getDetails($name = null);
+	public function setId($transaction_id);
 
 	/**
-	 * Get a plain old object copy for public consumption
-	 * @return stdClass
+	 * Returns transaction ID
+	 * @return string
 	 */
-	public function toObject();
+	public function getId();
+
+	/**
+	 * Sets payment method (gateway)
+	 *
+	 * @param string $payment_method Payment method
+	 * @return self
+	 */
+	public function setPaymentMethod($payment_method);
+
+	/**
+	 * Returns payment method
+	 * @return string|null
+	 */
+	public function getPaymentMethod();
+
+	/**
+	 * Sets the funding source used within the payment method (gateway)
+	 *
+	 * @param FundingSourceInterface $funding_source Funding source
+	 * @return self
+	 */
+	public function setFundingSource(FundingSourceInterface $funding_source);
+
+	/**
+	 * Returns funding source
+	 * @return FundingSourceInterface|null
+	 */
+	public function getFundingSource();
+
+	/**
+	 * Sets order
+	 * 
+	 * @param OrderInterface $order Order
+	 * @return self
+	 */
+	public function setOrder(OrderInterface $order);
+
+	/**
+	 * Returns an order
+	 * @return OrderInterface|false
+	 */
+	public function getOrder();
 
 	/**
 	 * Set payer of the transaction
 	 *
 	 * @param ElggEntity $customer Payer
-	 * @return void
+	 * @return self
 	 */
 	public function setCustomer(ElggEntity $customer);
 
@@ -100,36 +128,40 @@ interface TransactionInterface {
 	/**
 	 * Set monetary value of the transaction (total)
 	 *
-	 * @param int $amount Amount
-	 * @return void
+	 * @param Amount $amount
+	 * @return self
 	 */
-	public function setAmount($amount);
+	public function setAmount(Amount $amount);
 
 	/**
-	 * Returns monetary value
-	 * @return int
+	 * Returns total amount
+	 * @return Amount
 	 */
 	public function getAmount();
 
 	/**
-	 * Set currency of the transaction
-	 *
-	 * @param string $currency Currency code
-	 * @return void
+	 * Issue a full refund
+	 * @return bool
 	 */
-	public function setCurrency($currency);
+	public function refund();
 
 	/**
-	 * Returns currency
-	 * @return string
+	 * Add a payment or refund
+	 *
+	 * @param PaymentInterface $payment Payment
+	 * @return self
 	 */
-	public function getCurrency();
+	public function addPayment(PaymentInterface $payment);
 
 	/**
-	 * Returns commission rate that should be credited to the site
-	 *
-	 * @param GatewayInterface $interface Payment gateway
-	 * @return float
+	 * Returns a list of all payments and refunds
+	 * @return PaymentInterface
 	 */
-	public function getCommissionRate(GatewayInterface $interface);
+	public function getPayments();
+
+	/**
+	 * Prepare serializable array
+	 * @return array
+	 */
+	public function toArray();
 }
