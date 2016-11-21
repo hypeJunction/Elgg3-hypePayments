@@ -2,8 +2,10 @@
 
 require_once __DIR__ . '/autoloader.php';
 
+use hypeJunction\Payments\Transaction;
+
 $subtypes = [
-	hypeJunction\Payments\Transaction::SUBTYPE => hypeJunction\Payments\Transaction::CLASSNAME,
+	Transaction::SUBTYPE => Transaction::class,
 ];
 
 foreach ($subtypes as $subtype => $class) {
