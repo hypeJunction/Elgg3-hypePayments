@@ -1,3 +1,14 @@
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/hypeJunction/Elgg-payments/compare/2.0.0...v2.0.1) (2016-11-21)
+
+
+### Bug Fixes
+
+* **activate:** plugin can once again be activated without causing WSOD ([72cc6b1](https://github.com/hypeJunction/Elgg-payments/commit/72cc6b1))
+* **classes:** fix constact name ([039e4a3](https://github.com/hypeJunction/Elgg-payments/commit/039e4a3))
+
+
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/hypeJunction/Elgg-payments/compare/1.0.1...v2.0.0) (2016-11-15)
 
