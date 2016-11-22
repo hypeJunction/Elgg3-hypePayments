@@ -14,6 +14,13 @@ abstract class Product extends ElggObject implements ProductInterface {
 	/**
 	 * {@inheritdoc}
 	 */
+	protected function initializeAttributes() {
+		parent::initializeAttributes();
+	}
+	
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getId() {
 		return $this->guid;
 	}
