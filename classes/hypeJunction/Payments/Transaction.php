@@ -9,6 +9,9 @@ use ElggObject;
  * @property string $transaction_id Unique ID of the transaction
  * @property string $payment_method Payment method used for the transaction
  * @property string $status         Current payment status of the transaction
+ * @property int    $amount         Monetary value of the transaction amount
+ * @property int    $processor_fee  Fee withdrawn from the amount by the processor
+ * @property string $currency       Currency
  */
 class Transaction extends ElggObject implements TransactionInterface {
 
@@ -252,6 +255,21 @@ class Transaction extends ElggObject implements TransactionInterface {
 	/**
 	 * {@inheritdoc}
 	 */
+	public function setProcessorFee(Amount $fee) {
+		$this->processor_fee = $fee->getAmount();
+		return $this;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getProcessorFee() {
+		return new Amount((int) $this->processor_fee, $this->currency);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function setPaymentMethod($payment_method) {
 		$this->payment_method = $payment_method;
 		return $this;
@@ -302,6 +320,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 			$this->payment_method = $data['_payment_method'];
 			$this->status = $data['_status'];
 			$this->amount = $data['_amount']->getAmount();
+			$this->processor_fee = $data['_processor_fee']->getAmount();
 			$this->currency = $data['_amount']->getCurrency();
 			$this->time_created = $data['_time_created'];
 		}
@@ -330,6 +349,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 		$export['_time_created'] = $this->time_created;
 		$export['_order'] = $this->getOrder();
 		$export['_amount'] = $this->getAmount();
+		$export['_processor_fee'] = $this->getProcessorFee();
 		$export['_payment_method'] = $this->getPaymentMethod();
 		$export['_status'] = $this->getStatus();
 		$export['_merchant'] = $this->getMerchant();

@@ -160,6 +160,20 @@ interface TransactionInterface extends Serializable {
 	public function getPayments();
 
 	/**
+	 * Set the fee withdrawn from the total amount by the processor
+	 *
+	 * @param Amount $fee Processor fee
+	 * @return self
+	 */
+	public function setProcessorFee(Amount $fee);
+
+	/**
+	 * Get the amount of the processing fee withdrawn by the processor
+	 * @return Amount
+	 */
+	public function getProcessorFee();
+
+	/**
 	 * Prepare serializable array
 	 * @return array
 	 */
