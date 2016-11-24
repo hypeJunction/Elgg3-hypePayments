@@ -2,6 +2,7 @@
 
 namespace hypeJunction\Payments;
 
+use Elgg\Http\ResponseBuilder;
 use ElggEntity;
 use Serializable;
 
@@ -141,7 +142,7 @@ interface TransactionInterface extends Serializable {
 
 	/**
 	 * Issue a full refund
-	 * @return bool
+	 * @return bool|ResponseBuilder
 	 */
 	public function refund();
 

@@ -60,6 +60,7 @@ return [
 	'payments:payment:balance' => 'Balance',
 	'payments:payment:type' => 'Type',
 	'payments:payment:status' => 'Status',
+	'payments:payment:status:help' => 'Indicates the status of the transaction after this payment, i.e. if logging a refund change the status to Refunded',
 	
 	'payments:transaction:view' => 'Transaction details',
 	'payments:transaction:log_payment' => 'Log payment',

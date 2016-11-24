@@ -10,6 +10,9 @@ class Payment implements PaymentInterface {
 	protected $time_created;
 
 	public function getAmount() {
+		if (!$this->amount) {
+			return new Amount(0, 'EUR');
+		}
 		return $this->amount;
 	}
 

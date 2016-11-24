@@ -169,7 +169,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 */
 	public function refund() {
 		$params = ['entity' => $this];
-		elgg_trigger_plugin_hook('refund', 'payments', $params, false);
+		return elgg_trigger_plugin_hook('refund', 'payments', $params, false);
 	}
 
 	/**
