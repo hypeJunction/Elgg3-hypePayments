@@ -42,6 +42,7 @@ echo elgg_view_field([
 echo elgg_view_field([
 	'#type' => 'select',
 	'#label' => elgg_echo('payments:payment:status'),
+	'#help' => elgg_echo('payments:payment:status:help'),
 	'name' => 'status',
 	'value' => $entity->getStatus(),
 	'required' => true,

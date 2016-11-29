@@ -2,6 +2,7 @@
 
 namespace hypeJunction\Payments;
 
+use Elgg\Http\ResponseBuilder;
 use ElggEntity;
 use Serializable;
 
@@ -141,7 +142,7 @@ interface TransactionInterface extends Serializable {
 
 	/**
 	 * Issue a full refund
-	 * @return bool
+	 * @return bool|ResponseBuilder
 	 */
 	public function refund();
 
@@ -158,6 +159,20 @@ interface TransactionInterface extends Serializable {
 	 * @return PaymentInterface
 	 */
 	public function getPayments();
+
+	/**
+	 * Set the fee withdrawn from the total amount by the processor
+	 *
+	 * @param Amount $fee Processor fee
+	 * @return self
+	 */
+	public function setProcessorFee(Amount $fee);
+
+	/**
+	 * Get the amount of the processing fee withdrawn by the processor
+	 * @return Amount
+	 */
+	public function getProcessorFee();
 
 	/**
 	 * Prepare serializable array
