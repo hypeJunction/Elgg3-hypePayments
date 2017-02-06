@@ -1,3 +1,13 @@
+<a name="2.0.4"></a>
+## [2.0.4](https://github.com/hypeJunction/Elgg-payments/compare/2.0.3...v2.0.4) (2017-02-06)
+
+
+### Bug Fixes
+
+* **history:** provide more detailed customer information ([5b4f1bd](https://github.com/hypeJunction/Elgg-payments/commit/5b4f1bd))
+
+
+
 <a name="2.0.3"></a>
 ## [2.0.3](https://github.com/hypeJunction/Elgg-payments/compare/2.0.1...v2.0.3) (2017-01-30)
 
