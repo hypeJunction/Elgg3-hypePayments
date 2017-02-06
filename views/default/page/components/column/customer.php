@@ -16,7 +16,7 @@ if ($customer instanceof ElggEntity) {
 	$customer_name = $customer->getDisplayName();
 	$customer_url = $customer->getURL();
 	if ($customer->email) {
-		$customer_email = '[' . $customer_email . ']';
+		$customer_email = ' [' . $customer->email . ']';
 	}
 }
 
