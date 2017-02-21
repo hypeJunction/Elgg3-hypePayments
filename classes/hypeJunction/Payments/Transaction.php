@@ -139,13 +139,15 @@ class Transaction extends ElggObject implements TransactionInterface {
 	public function getOrder() {
 		if ($this->order) {
 			$order = unserialize($this->order);
-			if (!$order) {
-				elgg_log("
-					Order information for transaction $this->guid is corrupted:
-					$this->order
-				", 'ERROR');
+			if ($order) {
+				return $order;
 			}
-			return ;
+
+			elgg_log("
+				Order information for transaction $this->guid is corrupted:
+				$this->order
+			", 'ERROR');
+			}
 		}
 		return false;
 	}
