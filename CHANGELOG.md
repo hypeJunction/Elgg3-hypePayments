@@ -1,3 +1,17 @@
+<a name="2.0.6"></a>
+## [2.0.6](https://github.com/hypeJunction/Elgg-payments/compare/2.0.2...v2.0.6) (2017-02-21)
+
+
+### Bug Fixes
+
+* **history:** fix typo in costomer email ([06c4aea](https://github.com/hypeJunction/Elgg-payments/commit/06c4aea))
+* **history:** provide more detailed customer information ([5b4f1bd](https://github.com/hypeJunction/Elgg-payments/commit/5b4f1bd))
+* **transactions:** log an error when order information is corrupted ([09ebc0e](https://github.com/hypeJunction/Elgg-payments/commit/09ebc0e))
+* **transactions:** Order is now returned correctly ([846a0d4](https://github.com/hypeJunction/Elgg-payments/commit/846a0d4))
+* **views:** validate instances before formatting output ([00bf798](https://github.com/hypeJunction/Elgg-payments/commit/00bf798))
+
+
+
 <a name="2.0.5"></a>
 ## [2.0.5](https://github.com/hypeJunction/Elgg-payments/compare/2.0.4...v2.0.5) (2017-02-06)
 
