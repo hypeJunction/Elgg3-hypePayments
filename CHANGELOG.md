@@ -1,3 +1,14 @@
+<a name="2.0.7"></a>
+## [2.0.7](https://github.com/hypeJunction/Elgg-payments/compare/2.0.5...v2.0.7) (2017-02-22)
+
+
+### Bug Fixes
+
+* **languages:** add missing language key ([7b3e739](https://github.com/hypeJunction/Elgg-payments/commit/7b3e739))
+* **transactions:** Order is now returned correctly ([846a0d4](https://github.com/hypeJunction/Elgg-payments/commit/846a0d4))
+
+
+
 <a name="2.0.6"></a>
 ## [2.0.6](https://github.com/hypeJunction/Elgg-payments/compare/2.0.2...v2.0.6) (2017-02-21)
 
