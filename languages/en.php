@@ -79,4 +79,6 @@ return [
 	'payments:charges:coupon' => 'Coupon',
 	'payments:charges:site_commission' => 'Site Commission',
 	'payments:charges:handling_fee' => 'Handling',
+
+	'payments:invoice:id' => 'Invoice No. %s',
 ];
