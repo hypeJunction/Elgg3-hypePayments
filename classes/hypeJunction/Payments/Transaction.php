@@ -147,7 +147,6 @@ class Transaction extends ElggObject implements TransactionInterface {
 				Order information for transaction $this->guid is corrupted:
 				$this->order
 			", 'ERROR');
-			}
 		}
 		return false;
 	}
