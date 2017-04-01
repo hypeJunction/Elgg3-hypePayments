@@ -6,6 +6,8 @@ use ElggObject;
 
 abstract class Merchant extends ElggObject implements MerchantInterface {
 
+	use SerializedMetadata;
+	
 	/**
 	 * {@inheritdoc}
 	 */

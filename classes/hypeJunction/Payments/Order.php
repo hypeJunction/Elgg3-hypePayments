@@ -3,7 +3,6 @@
 namespace hypeJunction\Payments;
 
 use ElggEntity;
-use ElggGroup;
 use ElggObject;
 use ElggUser;
 

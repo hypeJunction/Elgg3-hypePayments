@@ -11,6 +11,8 @@ use ElggObject;
  */
 abstract class Product extends ElggObject implements ProductInterface {
 
+	use SerializedMetadata;
+	
 	/**
 	 * {@inheritdoc}
 	 */
@@ -119,7 +121,7 @@ abstract class Product extends ElggObject implements ProductInterface {
 		$charges = array_filter($charges, function($charge) {
 			return $charge instanceof ChargeInterface;
 		});
-		$this->charges = serialize($charges);
+		$this->setSerializedMetadata('charges', $charges);
 		return $this;
 	}
 
@@ -127,10 +129,7 @@ abstract class Product extends ElggObject implements ProductInterface {
 	 * {@inheritdoc}
 	 */
 	public function getCharges() {
-		if (!$this->charges) {
-			return [];
-		}
-		return unserialize($this->charges);
+		return $this->getUnserializedMetadata('charges');
 	}
 
 	/**

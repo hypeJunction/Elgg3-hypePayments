@@ -15,6 +15,8 @@ use ElggObject;
  */
 class Transaction extends ElggObject implements TransactionInterface {
 
+	use SerializedMetadata;
+
 	const SUBTYPE = 'transaction';
 
 	/**
@@ -127,7 +129,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 * {@inheritdoc}
 	 */
 	public function setOrder(OrderInterface $order) {
-		$this->order = serialize($order);
+		$this->setSerializedMetadata('order', $order);
 		$this->setMerchant($order->getMerchant());
 		$this->setCustomer($order->getCustomer());
 		$this->setAmount($order->getTotalAmount());
@@ -137,17 +139,16 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 * {@inheritdoc}
 	 */
 	public function getOrder() {
-		if ($this->order) {
-			$order = unserialize($this->order);
-			if ($order) {
-				return $order;
-			}
+		$order = $this->getUnserializedMetadata('order');
+		if ($order instanceof OrderInterface) {
+			return $order;
+		}
 
-			elgg_log("
+		elgg_log("
 				Order information for transaction $this->guid is corrupted:
 				$this->order
 			", 'ERROR');
-		}
+		
 		return false;
 	}
 
@@ -157,7 +158,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	public function addPayment(PaymentInterface $payment) {
 		$payments = (array) $this->payments;
 		$payments[] = serialize($payment);
-		$this->payments = $payments;
+		$this->setSerializedMetadata('payments', $payments);
 		return $this;
 	}
 
@@ -165,7 +166,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 * {@inheritdoc}
 	 */
 	public function getPayments() {
-		$payments = (array) $this->payments;
+		$payments = (array) $this->getUnserializedMetadata('payments');
 		foreach ($payments as &$child) {
 			$child = unserialize($child);
 		}
@@ -412,4 +413,5 @@ class Transaction extends ElggObject implements TransactionInterface {
 		$this->details = $details;
 		$this->setMetadata('details', json_encode($details));
 	}
+
 }
