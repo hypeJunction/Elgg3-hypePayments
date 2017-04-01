@@ -1,3 +1,13 @@
+<a name="2.0.10"></a>
+## [2.0.10](https://github.com/hypeJunction/Elgg-payments/compare/2.0.9...v2.0.10) (2017-04-01)
+
+
+### Bug Fixes
+
+* **data:** use base64 encoding to avoid data loss due to multi-byte chars and escaping ([75eb97f](https://github.com/hypeJunction/Elgg-payments/commit/75eb97f))
+
+
+
 <a name="2.0.9"></a>
 ## [2.0.9](https://github.com/hypeJunction/Elgg-payments/compare/2.0.7...v2.0.9) (2017-04-01)
 
