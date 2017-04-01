@@ -14,7 +14,8 @@ trait SerializedMetadata {
 	public function setSerializedMetadata($name, $value = null) {
 
 		$value = serialize($value);
-		
+		$value = "z_" . base64_encode($value);
+
 		if (strlen($value) > 50000) {
 			// Elgg metastring can only hold 65,535 chars
 			// Let's explode the string and store as an array
@@ -35,10 +36,15 @@ trait SerializedMetadata {
 	public function getUnserializedMetadata($name) {
 		if (is_array($this->$name)) {
 			$serialized = implode('', $this->$name);
-			$value = @unserialize($serialized);
 		} else {
-			$value = @unserialize($this->$name);
+			$serialized = $this->$name;
 		}
+
+		if (substr($serialized, 0, 2) === 'z_') {
+			$serialized = base64_decode(substr($serialized, 2));
+		}
+		$value = @unserialize($serialized);
+
 		if ($value !== false) {
 			return $value;
 		}
