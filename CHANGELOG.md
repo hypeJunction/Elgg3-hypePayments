@@ -1,3 +1,14 @@
+<a name="2.0.9"></a>
+## [2.0.9](https://github.com/hypeJunction/Elgg-payments/compare/2.0.7...v2.0.9) (2017-04-01)
+
+
+### Bug Fixes
+
+* **data:** properly truncate long serialized metastrings ([17e0189](https://github.com/hypeJunction/Elgg-payments/commit/17e0189))
+* **transactions:** fixes syntax error ([ddb08f5](https://github.com/hypeJunction/Elgg-payments/commit/ddb08f5))
+
+
+
 <a name="2.0.8"></a>
 ## [2.0.8](https://github.com/hypeJunction/Elgg-payments/compare/2.0.6...v2.0.8) (2017-02-27)
 
