@@ -379,6 +379,9 @@ class Transaction extends ElggObject implements TransactionInterface {
 			}
 		} else if ($val instanceof ElggEntity) {
 			$export = (array) $val->toObject();
+			if (isset($export['description'])) {
+				$export['description'] = elgg_get_excerpt($export['description'], 1000);
+			}
 			$export['_id'] = $val->guid;
 			$val = $export;
 		}
