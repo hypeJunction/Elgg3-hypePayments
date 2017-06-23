@@ -1,3 +1,13 @@
+<a name="2.0.11"></a>
+## [2.0.11](https://github.com/hypeJunction/Elgg-payments/compare/2.0.10...v2.0.11) (2017-06-23)
+
+
+### Bug Fixes
+
+* **export:** only store a 1000 char export of entity description ([9bc682c](https://github.com/hypeJunction/Elgg-payments/commit/9bc682c))
+
+
+
 <a name="2.0.10"></a>
 ## [2.0.10](https://github.com/hypeJunction/Elgg-payments/compare/2.0.9...v2.0.10) (2017-04-01)
 
