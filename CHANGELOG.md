@@ -1,3 +1,13 @@
+<a name="2.0.12"></a>
+## [2.0.12](https://github.com/hypeJunction/Elgg-payments/compare/2.0.11...v2.0.12) (2017-06-23)
+
+
+### Bug Fixes
+
+* **logs:** allow payments to be logged manually regardless of the original payment status ([fad75b7](https://github.com/hypeJunction/Elgg-payments/commit/fad75b7))
+
+
+
 <a name="2.0.11"></a>
 ## [2.0.11](https://github.com/hypeJunction/Elgg-payments/compare/2.0.10...v2.0.11) (2017-06-23)
 
