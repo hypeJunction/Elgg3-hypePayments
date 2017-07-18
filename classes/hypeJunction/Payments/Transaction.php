@@ -258,7 +258,19 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 * {@inheritdoc}
 	 */
 	public function getAmount() {
-		return new Amount($this->amount, $this->currency);
+		try {
+			return new Amount($this->amount, $this->currency);
+		} catch (\InvalidArgumentException $ex) {
+			$msg = "
+				Transaction with guid {$this->guid} is corrupted. 
+				Amount information for this transaction is not set correctly.
+				The amount has been defaulted to 0 EUR to prevent code termination.
+				Please review the transaction logs and remove or update the transaction.
+			";
+			elgg_log($msg, 'ERROR');
+			elgg_add_admin_notice("corrupted_transaction_{$this->guid}", $msg);
+			return new Amount(0, 'EUR');
+		}
 	}
 
 	/**
