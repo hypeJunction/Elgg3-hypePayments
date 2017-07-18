@@ -1,3 +1,13 @@
+<a name="2.0.13"></a>
+## [2.0.13](https://github.com/hypeJunction/Elgg-payments/compare/2.0.12...v2.0.13) (2017-07-18)
+
+
+### Bug Fixes
+
+* **transaction:** avoid WSOD when transaction amount is corrupted ([588537e](https://github.com/hypeJunction/Elgg-payments/commit/588537e))
+
+
+
 <a name="2.0.12"></a>
 ## [2.0.12](https://github.com/hypeJunction/Elgg-payments/compare/2.0.11...v2.0.12) (2017-06-23)
 
