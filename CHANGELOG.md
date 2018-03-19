@@ -1,3 +1,13 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/hypeJunctionPro/Elgg3-hypePayments/compare/2.0.13...3.0.0) (2018-03-19)
+
+
+### Features
+
+* **releases:** upgrade for Elgg 3 ([1ac8ebf](https://github.com/hypeJunctionPro/Elgg3-hypePayments/commit/1ac8ebf))
+
+
+
 <a name="2.0.13"></a>
 ## [2.0.13](https://github.com/hypeJunction/Elgg-payments/compare/2.0.12...v2.0.13) (2017-07-18)
 

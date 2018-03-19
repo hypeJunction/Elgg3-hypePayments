@@ -6,7 +6,7 @@
 
     <description>Payments API</description>
     <category>commerce</category>
-    <version type="dist">2.0.13</version>
+    <version type="dist">3.0.0</version>
 
     <author>Ismayil Khayredinov (info@hypejunction.com)</author>
     <website>http://www.hypejunction.com/</website>
