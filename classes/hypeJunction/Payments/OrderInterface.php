@@ -12,7 +12,7 @@ interface OrderInterface extends Serializable {
 
 	/**
 	 * Set a property
-	 * 
+	 *
 	 * @param string $key   Property name
 	 * @param mixed  $value Property value
 	 * @return self
@@ -29,7 +29,7 @@ interface OrderInterface extends Serializable {
 
 	/**
 	 * Sets the merchant
-	 * 
+	 *
 	 * @param ElggEntity $merchant Merchant
 	 * @return self
 	 */
@@ -57,7 +57,7 @@ interface OrderInterface extends Serializable {
 
 	/**
 	 * Sets the currency code
-	 * 
+	 *
 	 * @param string $currency Currency
 	 * @return self
 	 */
@@ -85,7 +85,7 @@ interface OrderInterface extends Serializable {
 
 	/**
 	 * Find a order item for product
-	 * 
+	 *
 	 * @param ProductInterface $product Product
 	 * @return OrderItemInterface
 	 */
@@ -167,7 +167,7 @@ interface OrderInterface extends Serializable {
 
 	/**
 	 * Set charges that apply to the subtotal
-	 * 
+	 *
 	 * @param ChargeInterface[] $charges Charges
 	 * @return self
 	 */

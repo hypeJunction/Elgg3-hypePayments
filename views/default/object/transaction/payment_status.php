@@ -7,4 +7,4 @@ if (!$item instanceof TransactionInterface) {
 	return;
 }
 
-echo $item->getAmount()->format();
+echo elgg_echo("payments:status:{$item->getStatus()}");

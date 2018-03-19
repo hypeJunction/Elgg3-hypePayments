@@ -16,7 +16,7 @@ if ($customer instanceof ElggEntity) {
 	$customer_name = $customer->getDisplayName();
 	$customer_url = $customer->getURL();
 	if ($customer->email) {
-		$customer_email = ' [' . $customer->email . ']';
+		$customer_email = $customer->email;
 	}
 }
 
@@ -29,7 +29,16 @@ if (empty($customer_email)) {
 }
 
 echo elgg_view('output/url', [
-	'text' => $customer_name . $customer_email,
+	'text' => $customer_name,
 	'href' => $customer_url,
 ]);
+
+if ($customer_email) {
+	echo '<br />';
+	echo '<small>' . elgg_view('output/url', [
+			'href' => "mailto:$customer_email",
+			'text' => elgg_get_excerpt($customer_email, 25),
+			'icon' => 'envelope',
+		]) . '</small>';
+}
 

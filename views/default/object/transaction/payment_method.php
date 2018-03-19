@@ -7,11 +7,10 @@ if (!$item instanceof Transaction) {
 	return;
 }
 
-if ($item->payment_method) {
-	echo elgg_view("payments/method/$item->payment_method");
-}
-
 $funding = $item->getFundingSource();
 if ($funding) {
 	echo $funding->format();
+} else if ($item->payment_method) {
+	echo '<small>' . elgg_view("payments/method/$item->payment_method") . '</small>';
 }
+

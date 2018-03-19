@@ -30,12 +30,12 @@ echo elgg_view_field([
 			'name' => 'amount',
 			'value' => $entity->getAmount()->getConvertedAmount(),
 			'required' => true,
-		],
+			],
 			[
 			'#type' => 'text',
 			'disabled' => true,
 			'value' => $entity->getAmount()->getCurrency(),
-		],
+			],
 	],
 ]);
 

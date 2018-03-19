@@ -2,8 +2,11 @@
 
 return [
 
+	'item:object:transaction' => 'Transaction',
+	'collection:object:transaction' => 'Transactions',
+
 	'payments' => 'Payments',
-	'payments:history' => 'Payment History',
+	'payments:history' => 'Payment history',
 
 	'payments:price' => '%s %s',
 
@@ -23,12 +26,13 @@ return [
 	'payments:processing_fee' => 'Processing fee %s%%',
 	'payments:no_processing_fee' => 'No processing fee',
 
-	'table_columns:fromView:merchant' => 'Payee',
-	'table_columns:fromView:customer' => 'Payer',
-	'table_columns:fromView:payment_status' => 'Status',
-	'table_columns:fromView:payment_method' => 'Method',
-	'table_columns:fromView:amount' => 'Amount',
-	'table_columns:fromView:transaction_id' => 'ID',
+	'ViewColumn:view:object/transaction/merchant' => 'Payee',
+	'ViewColumn:view:object/transaction/customer' => 'Payer',
+	'ViewColumn:view:object/transaction/payment_status' => 'Status',
+	'ViewColumn:view:object/transaction/payment_method' => 'Method',
+	'ViewColumn:view:object/transaction/amount' => 'Amount',
+	'ViewColumn:view:object/transaction/transaction_id' => 'ID',
+	'ViewColumn:view:object/transaction/time_created' => 'Date',
 
 	'payments:transaction' => 'Transaction',
 	'payments:transactions:no_results' => 'There are not transactions yet',
@@ -81,4 +85,6 @@ return [
 	'payments:charges:handling_fee' => 'Handling',
 
 	'payments:invoice:id' => 'Invoice No. %s',
+
+	'payments:method:select' => 'Pay with',
 ];

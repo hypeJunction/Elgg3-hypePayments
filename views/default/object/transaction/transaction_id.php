@@ -7,4 +7,8 @@ if (!$item instanceof TransactionInterface) {
 	return;
 }
 
-echo elgg_echo("payments:status:{$item->getStatus()}");
+echo elgg_view('output/url', [
+	'text' => $item->guid,
+	'href' => $item->getURL(),
+	'title' => $item->transaction_id,
+]);

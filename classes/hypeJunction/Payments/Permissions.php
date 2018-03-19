@@ -6,7 +6,7 @@ class Permissions {
 	
 	/**
 	 * Set transaction editing permissions
-	 * 
+	 *
 	 * @param string $hook   "permissions_check"
 	 * @param string $type   "object"
 	 * @param bool   $return Permission

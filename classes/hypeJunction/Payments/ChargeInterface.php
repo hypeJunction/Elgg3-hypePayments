@@ -12,7 +12,7 @@ interface ChargeInterface extends Serializable {
 	/**
 	 * Sets the ID of the charge
 	 * Used in language keys
-	 * 
+	 *
 	 * @param string $id ID
 	 * @return self
 	 */
@@ -26,7 +26,7 @@ interface ChargeInterface extends Serializable {
 
 	/**
 	 * Sets the charge rate
-	 * 
+	 *
 	 * @param float $rate Rate
 	 * @return self
 	 */
@@ -54,7 +54,7 @@ interface ChargeInterface extends Serializable {
 
 	/**
 	 * Sets base amount
-	 * 
+	 *
 	 * @param Amount $amount Base of the calculation
 	 * @return self
 	 */

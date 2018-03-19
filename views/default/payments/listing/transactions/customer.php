@@ -7,23 +7,15 @@ if (!$entity->canEdit()) {
 	return;
 }
 
-echo elgg_list_entities_from_relationship([
+echo elgg_list_entities([
 	'types' => 'object',
 	'subtypes' => Transaction::SUBTYPE,
 	'relationship' => 'customer',
 	'relationship_guid' => (int) $entity->guid,
 	'inverse_relationship' => false,
 	'list_type' => 'table',
-	'columns' => [
-		elgg()->table_columns->transaction_id(),
-		elgg()->table_columns->time_created(null, [
-			'format' => 'M j, Y H:i',
-		]),
-		elgg()->table_columns->payment_method(),
-		elgg()->table_columns->customer(),
-		elgg()->table_columns->merchant(),
-		elgg()->table_columns->amount(),
-		elgg()->table_columns->payment_status(),
-	],
+	'columns' => \hypeJunction\Payments\Transaction::getTableColumns(),
+	'list_class' => 'payments-transactions',
 	'item_class' => 'payments-transaction',
-		]);
+	'no_results' => elgg_echo('payments:transactions:no_results'),
+]);

@@ -44,11 +44,11 @@ interface TransactionInterface extends Serializable {
 
 	/**
 	 * Sets transaction ID
-	 * 
+	 *
 	 * @param string $transaction_id ID
 	 * @return self
 	 */
-	public function setId($transaction_id);
+	public function setId($transaction_id = null);
 
 	/**
 	 * Returns transaction ID
@@ -86,7 +86,7 @@ interface TransactionInterface extends Serializable {
 
 	/**
 	 * Sets order
-	 * 
+	 *
 	 * @param OrderInterface $order Order
 	 * @return self
 	 */

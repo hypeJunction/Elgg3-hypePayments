@@ -5,42 +5,62 @@
 }
 
 .payments-order-table .payments-order-item-price {
-    text-align: center;
+	text-align: center;
 }
 
 .payments-order-table td, .payments-order-table th {
-    text-align: center;
+	text-align: center;
 }
 
 .payments-order-table .payments-order-item-description {
-    text-align: left;
+	text-align: left;
 }
 
 .payments-order-table .payments-order-subtotal td:first-child,
 .payments-transaction-payments-balance td:first-child {
-    text-align: right;
+	text-align: right;
 }
 
 .payments-order-table .payments-order-subtotal {
-    font-size: 90%;
-    background: #f1f1f1;
+	font-size: 90%;
+	background: #f1f1f1;
 }
 
 .payments-order-table .payments-order-total td,
 .payments-transaction-payments-balance td {
-    font-size: 110%;
-    font-weight: bold;
+	font-size: 110%;
+	font-weight: bold;
 }
 
 .payments-order-table .payments-order-total {
-    background: #f1f1f1;
+	background: #f1f1f1;
 }
 
 .payments-order-table .payments-order-total td:first-child {
-    text-align: right;
+	text-align: right;
 }
 
 .payments-order-charges-included {
 	font-size: 90%;
 	font-style: italic;
+}
+
+.elgg-input-payments-amount {
+	position: relative;
+}
+
+.elgg-input-payments-amount [data-part="amount"] {
+	padding-left: 100px;
+}
+
+.elgg-input-payments-amount [data-part="currency"] {
+	position: absolute;
+	left: 0;
+	top: 0;
+	border: none;
+	background: none;
+	border-right: 1px solid $(border-color-soft);
+	border-radius: 0;
+	padding: 0 1rem;
+	max-width: 100px;
 }

@@ -6,7 +6,7 @@ trait SerializedMetadata {
 
 	/**
 	 * Due to storage length limitations, we need to truncate metadata values
-	 * 
+	 *
 	 * @param string $name  Metadata name
 	 * @param mixed  $value Metadata value
 	 * @return static
@@ -43,7 +43,8 @@ trait SerializedMetadata {
 		if (substr($serialized, 0, 2) === 'z_') {
 			$serialized = base64_decode(substr($serialized, 2));
 		}
-		$value = @unserialize($serialized);
+
+		$value = unserialize($serialized);
 
 		if ($value !== false) {
 			return $value;

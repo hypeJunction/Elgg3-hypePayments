@@ -18,7 +18,7 @@ interface StorageInterface {
 	/**
 	 * Save order
 	 *
-	 * @param mixed $id ID
+	 * @param mixed $id   ID
 	 * @param mixed $data Data
 	 * @return void
 	 */

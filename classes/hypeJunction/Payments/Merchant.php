@@ -7,7 +7,8 @@ use ElggObject;
 abstract class Merchant extends ElggObject implements MerchantInterface {
 
 	use SerializedMetadata;
-	
+	use EntityLoader;
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -43,7 +44,7 @@ abstract class Merchant extends ElggObject implements MerchantInterface {
 		$data = unserialize($serialized);
 
 		$this->initializeAttributes();
-		if (!$data['_id'] || !$this->load($data['_id'])) {
+		if (!$this->loadFromGuid($data['_id'])) {
 			$this->title = $data['_title'];
 			$this->description = $data['_description'];
 		}

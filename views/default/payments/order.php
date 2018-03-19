@@ -68,7 +68,7 @@ $incl_charges = [];
 			<td colspan="3"><?= elgg_echo('payments:order:subtotal') ?></td>
 			<td>
 				<?php
-				echo $order->getSubtotalAmount()->format()
+				echo $order->getSubtotalAmount()->format();
 				?>
 			</td>
 		</tr>

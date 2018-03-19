@@ -2,8 +2,11 @@
 
 namespace hypeJunction\Payments;
 
+use Elgg\Views\TableColumn;
+use Elgg\Views\TableColumn\ViewColumn;
 use ElggEntity;
 use ElggObject;
+use hypeJunction\Access\Collection;
 
 /**
  * @property string $transaction_id Unique ID of the transaction
@@ -16,6 +19,7 @@ use ElggObject;
 class Transaction extends ElggObject implements TransactionInterface {
 
 	use SerializedMetadata;
+	use EntityLoader;
 
 	const SUBTYPE = 'transaction';
 
@@ -51,12 +55,24 @@ class Transaction extends ElggObject implements TransactionInterface {
 		}
 
 		if (!$this->transaction_id) {
-			$this->transaction_id = sha1(time() . rand(10000, 99999) . serialize($this->getOrder()));
+			$this->setId();
 		}
+
+		$this->access_id = Collection::create([
+			$this->customer->guid,
+			$this->merchant->guid,
+			$this->owner_guid,
+			$this->container_guid,
+		])->getCollectionId();
 
 		$result = parent::save();
 
 		if ($result) {
+			$storage = elgg()->{'payments.storage'};
+			/* @var $storage StorageInterface */
+
+			$storage->invalidate($this->transaction_id);
+
 			if ($this->customer) {
 				add_entity_relationship($this->customer->guid, 'customer', $this->guid);
 			}
@@ -72,8 +88,13 @@ class Transaction extends ElggObject implements TransactionInterface {
 	/**
 	 * {@inheritdoc}
 	 */
-	public function setId($transaction_id) {
-		$this->transaction_id = $transaction_id;
+	public function setId($transaction_id = null) {
+		if (!$transaction_id) {
+			$this->transaction_id = sha1(time() . rand(10000, 99999) . serialize($this->getOrder()));
+		} else {
+			$this->transaction_id = $transaction_id;
+		}
+
 		return $this;
 	}
 
@@ -93,7 +114,15 @@ class Transaction extends ElggObject implements TransactionInterface {
 			return false;
 		}
 
-		$transactions = elgg_get_entities_from_metadata([
+		$storage = elgg()->{'payments.storage'};
+		/* @var $storage StorageInterface */
+
+		$transaction = $storage->get($transaction_id);
+		if ($transaction instanceof TransactionInterface) {
+			return $transaction;
+		}
+
+		$transactions = elgg_get_entities([
 			'types' => 'object',
 			//'subtypes' => self::SUBTYPE,
 			'metadata_name_value_pairs' => [
@@ -108,13 +137,33 @@ class Transaction extends ElggObject implements TransactionInterface {
 	}
 
 	/**
+	 * Stores transaction in sessin storage
+	 * @return void
+	 */
+	public function store() {
+		if (!$this->transaction_id) {
+			$this->setId();
+		}
+
+		$storage = elgg()->{'payments.storage'};
+		/* @var $storage StorageInterface */
+
+		$storage->put($this->transaction_id, $this);
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function setStatus($status, array $params = []) {
+		if ($this->status == $status) {
+			return $this;
+		}
+
 		$params['entity'] = $this;
 		if (elgg_trigger_plugin_hook("transaction:$status", 'payments', $params, true)) {
 			$this->status = $status;
 		}
+
 		return $this;
 	}
 
@@ -145,10 +194,10 @@ class Transaction extends ElggObject implements TransactionInterface {
 		}
 
 		elgg_log("
-				Order information for transaction $this->guid is corrupted:
+				Order information for transaction $this->transaction_id is corrupted:
 				$this->order
 			", 'ERROR');
-		
+
 		return false;
 	}
 
@@ -156,9 +205,10 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 * {@inheritdoc}
 	 */
 	public function addPayment(PaymentInterface $payment) {
-		$payments = (array) $this->payments;
+		$payments = (array) $this->getUnserializedMetadata('payments');
 		$payments[] = serialize($payment);
 		$this->setSerializedMetadata('payments', $payments);
+
 		return $this;
 	}
 
@@ -167,9 +217,15 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 */
 	public function getPayments() {
 		$payments = (array) $this->getUnserializedMetadata('payments');
-		foreach ($payments as &$child) {
+		foreach ($payments as $key => $child) {
 			$child = unserialize($child);
+			if (!$child instanceof PaymentInterface) {
+				unset($payments[$key]);
+				continue;
+			}
+			$payments[$key] = $child;
 		}
+
 		return $payments;
 	}
 
@@ -178,6 +234,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 */
 	public function refund() {
 		$params = ['entity' => $this];
+
 		return elgg_trigger_plugin_hook('refund', 'payments', $params, false);
 	}
 
@@ -186,6 +243,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 */
 	public function setCustomer(ElggEntity $customer = null) {
 		$this->customer = $customer;
+
 		return $this;
 	}
 
@@ -200,7 +258,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 			return $this->customer;
 		}
 
-		$customer = elgg_get_entities_from_relationship([
+		$customer = elgg_get_entities([
 			'relationship' => 'customer',
 			'relationship_guid' => $this->guid,
 			'inverse_relationship' => true,
@@ -210,6 +268,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 			return false;
 		}
 		$this->customer = array_shift($customer);
+
 		return $this->customer;
 	}
 
@@ -218,6 +277,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 */
 	public function setMerchant(ElggEntity $merchant) {
 		$this->merchant = $merchant;
+
 		return $this;
 	}
 
@@ -232,7 +292,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 			return $this->merchant;
 		}
 
-		$merchant = elgg_get_entities_from_relationship([
+		$merchant = elgg_get_entities([
 			'relationship' => 'merchant',
 			'relationship_guid' => $this->guid,
 			'inverse_relationship' => true,
@@ -242,6 +302,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 			return false;
 		}
 		$this->merchant = array_shift($merchant);
+
 		return $this->merchant;
 	}
 
@@ -251,6 +312,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	public function setAmount(Amount $amount) {
 		$this->amount = $amount->getAmount();
 		$this->currency = $amount->getCurrency();
+
 		return $this;
 	}
 
@@ -259,7 +321,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 */
 	public function getAmount() {
 		try {
-			return new Amount($this->amount, $this->currency);
+			return new Amount((int) $this->amount, $this->currency);
 		} catch (\InvalidArgumentException $ex) {
 			$msg = "
 				Transaction with guid {$this->guid} is corrupted. 
@@ -269,6 +331,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 			";
 			elgg_log($msg, 'ERROR');
 			elgg_add_admin_notice("corrupted_transaction_{$this->guid}", $msg);
+
 			return new Amount(0, 'EUR');
 		}
 	}
@@ -278,6 +341,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 */
 	public function setProcessorFee(Amount $fee) {
 		$this->processor_fee = $fee->getAmount();
+
 		return $this;
 	}
 
@@ -293,6 +357,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 */
 	public function setPaymentMethod($payment_method) {
 		$this->payment_method = $payment_method;
+
 		return $this;
 	}
 
@@ -317,6 +382,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 		if ($this->funding_source) {
 			return unserialize($this->funding_source);
 		}
+
 		return $this->funding_source;
 	}
 
@@ -334,7 +400,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 		$data = unserialize($serialized);
 
 		$this->initializeAttributes();
-		if (!$data['_id'] || !$this->load($data['_id'])) {
+		if (!$this->loadFromGuid($data['_id'])) {
 			if ($data['_order'] instanceof OrderInterface) {
 				$this->setOrder($data['_order']);
 			}
@@ -375,6 +441,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 		$export['_status'] = $this->getStatus();
 		$export['_merchant'] = $this->getMerchant();
 		$export['_customer'] = $this->getCustomer();
+
 		return $this->prepareExport($export);
 	}
 
@@ -382,6 +449,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	 * Export entities
 	 *
 	 * @param mixed $val Value to export
+	 *
 	 * @return mixed
 	 */
 	protected function prepareExport($val) {
@@ -416,6 +484,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 		if (!$name) {
 			return $this->details;
 		}
+
 		return elgg_extract($name, $this->details);
 	}
 
@@ -429,4 +498,24 @@ class Transaction extends ElggObject implements TransactionInterface {
 		$this->setMetadata('details', json_encode($details));
 	}
 
+	/**
+	 * Get entity table columns
+	 *
+	 * @param array $params Params
+	 *
+	 * @return TableColumn[]
+	 */
+	public static function getTableColumns(array $params = []) {
+		$columns = [
+			new ViewColumn('object/transaction/transaction_id'),
+			new ViewColumn('object/transaction/time_created'),
+			new ViewColumn('object/transaction/payment_method'),
+			new ViewColumn('object/transaction/customer'),
+			new ViewColumn('object/transaction/merchant'),
+			new ViewColumn('object/transaction/amount'),
+			new ViewColumn('object/transaction/payment_status'),
+		];
+
+		return elgg_trigger_plugin_hook('columns', 'object:transaction', $params, $columns);
+	}
 }

@@ -31,7 +31,7 @@ interface OrderItemInterface extends Serializable {
 
 	/**
 	 * Set product
-	 * 
+	 *
 	 * @param ProductInterface $product Product
 	 * @return self
 	 */

@@ -218,7 +218,10 @@ class OrderItem implements OrderItemInterface {
 	public function unserialize($serialized) {
 		$data = unserialize($serialized);
 
-		$this->setProduct($data['_product']);
+		if ($data['_product'] instanceof ProductInterface) {
+			$this->setProduct($data['_product']);
+		}
+
 		$this->setQuantity($data['_quantity']);
 		$this->props = $data['_props'];
 	}

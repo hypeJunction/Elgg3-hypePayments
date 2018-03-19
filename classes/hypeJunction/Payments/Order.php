@@ -213,7 +213,7 @@ class Order implements OrderInterface {
 	 */
 	public function subtotal() {
 		$total = 0;
-		foreach ($this->all() as $item) {
+		foreach ($this->items as $item) {
 			$total += $item->getProduct()->getPrice()->getAmount() * $item->getQuantity();
 		}
 		return $total;
@@ -282,7 +282,7 @@ class Order implements OrderInterface {
 	 * {@inheritdoc}
 	 */
 	public function getMerchant() {
-		return $this->merchant;
+		return $this->merchant ? : elgg_get_site_entity();
 	}
 
 	/**
@@ -297,7 +297,7 @@ class Order implements OrderInterface {
 	 * {@inheritdoc}
 	 */
 	public function getCustomer() {
-		return $this->customer;
+		return $this->customer ? : elgg_get_logged_in_user_entity();
 	}
 
 	/**
@@ -315,9 +315,8 @@ class Order implements OrderInterface {
 		if ($this->currency) {
 			return $this->currency;
 		}
-		$item = array_shift($this->items);
-		if ($item) {
-			return $item->getProduct()->getPrice()->getCurrency();
+		if (!empty($this->items)) {
+			return $this->items[0]->getProduct()->getPrice()->getCurrency();
 		}
 	}
 

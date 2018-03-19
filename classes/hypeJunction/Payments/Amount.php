@@ -2,8 +2,12 @@
 
 namespace hypeJunction\Payments;
 
-use SebastianBergmann\Money\Currency;
-use SebastianBergmann\Money\Money;
+use InvalidArgumentException;
+use Money\Currencies\ISOCurrencies;
+use \Money\Currency;
+use Money\Formatter\DecimalMoneyFormatter;
+use \Money\Money;
+use Money\Parser\DecimalMoneyParser;
 
 class Amount implements \Serializable {
 
@@ -21,16 +25,16 @@ class Amount implements \Serializable {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param int    $amount   Monetary value, i.e. 1000 for 10.00 EUR
 	 * @param string $currency Currency code
 	 */
-	public function __construct($amount, $currency) {
+	public function __construct($amount, $currency = null) {
 		if (!is_int($amount)) {
-			throw new \InvalidArgumentException(__METHOD__ . ' expects a monetary value as integer');
+			throw new InvalidArgumentException(__METHOD__ . ' expects a monetary value as integer');
 		}
 		$this->amount = $amount;
-		$this->currency = $currency;
+		$this->currency = $currency ? strtoupper($currency) : null;
 	}
 
 	/**
@@ -39,7 +43,11 @@ class Amount implements \Serializable {
 	 */
 	public function getConvertedAmount() {
 		$money = new Money($this->getAmount(), new Currency($this->getCurrency()));
-		return $money->getConvertedAmount();
+
+		$currencies = new ISOCurrencies();
+		$formatter = new DecimalMoneyFormatter($currencies);
+
+		return $formatter->format($money);
 	}
 
 	/**
@@ -66,8 +74,11 @@ class Amount implements \Serializable {
 	 * @return \self
 	 */
 	public static function fromString($value, $currency) {
-		$money = Money::fromString($value, $currency);
-		return new Amount($money->getAmount(), $money->getCurrency()->getCurrencyCode());
+		$currencies = new ISOCurrencies();
+		$moneyParser = new DecimalMoneyParser($currencies);
+		$money = $moneyParser->parse($value, $currency);
+
+		return new Amount((int) $money->getAmount(), $money->getCurrency()->getCode());
 	}
 
 	/**
@@ -88,7 +99,7 @@ class Amount implements \Serializable {
 	 * @return Amount[]
 	 */
 	public function extractPercentage($percentage) {
-		$extract = (new Money($this->getAmount(), $this->getCurrency()))->extractPercentage($percentage);
+		$extract = (new Money($this->getAmount(), new Currency($this->getCurrency())))->allocate([$percentage]);
 		return [
 			'subtotal' => new Amount($extract['subtotal']->getAmount(), $this->getCurrency()),
 			'percentage' => new Amount($extract['percentage']->getAmount(), $this->getCurrency()),

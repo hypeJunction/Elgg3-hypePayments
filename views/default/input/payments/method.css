@@ -1,0 +1,66 @@
+.payments-method-selector input[type="radio"] {
+	display: none;
+}
+
+.payments-method-selector-label {
+	padding: 1rem;
+	box-shadow: 0 0 0 1px $(border-color-mild);
+	display: block;
+	margin-bottom: 0.5rem;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.payments-method-selector-label h3 small {
+	font-size: 80%;
+	font-weight: bold;
+	margin-left: 1rem;
+	color: $(text-color-highlight);
+}
+
+.payments-method-selector-checkbox {
+	width: 1.5rem;
+	height: 1.5rem;
+	line-height: 1.2rem;
+	padding: 0;
+	text-align: center;
+	vertical-align: middle;
+	border: 1px solid $(border-color-mild);
+	border-radius: 3px;
+	color: $(text-color-highlight);
+	background: #fff;
+}
+
+.payments-method-selector-label .elgg-image-block {
+	align-items: center;
+}
+
+.payments-method-selector-checkbox .elgg-icon {
+	display: none;
+}
+
+.payments-method-selector-label .payments-method-data {
+	margin: 0;
+	display: none;
+}
+
+.payments-method-selector-input:checked + .payments-method-selector-label {
+	box-shadow: 0 0 0 1px $(border-color-highlight);
+	background: $(background-color-soft);
+
+	.payments-method-selector-checkbox .elgg-icon {
+		display: inline-block;
+	}
+
+	.payments-method-data {
+		display: block;
+		margin-top: 1rem;
+	}
+}
+
+.payment-method-icons img {
+	max-height: 1rem;
+	display: inline-block;
+	vertical-align: baseline;
+	line-height: 1.5rem;
+}

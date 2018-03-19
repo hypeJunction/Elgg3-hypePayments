@@ -12,7 +12,8 @@ use ElggObject;
 abstract class Product extends ElggObject implements ProductInterface {
 
 	use SerializedMetadata;
-	
+	use EntityLoader;
+
 	/**
 	 * {@inheritdoc}
 	 */
@@ -146,7 +147,7 @@ abstract class Product extends ElggObject implements ProductInterface {
 		$data = unserialize($serialized);
 
 		$this->initializeAttributes();
-		if (!$data['_id'] || !$this->load($data['_id'])) {
+		if (!$this->loadFromGuid($data['_id'])) {
 			$this->title = $data['_title'];
 			$this->description = $data['_description'];
 			$this->setPrice($data['_price']);
