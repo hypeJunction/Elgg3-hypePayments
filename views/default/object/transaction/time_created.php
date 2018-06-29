@@ -6,6 +6,6 @@ if (!$item instanceof \hypeJunction\Payments\Transaction) {
 }
 
 echo elgg_view('output/date', [
-	'value' => $item->time_created,
+	'value' => $item->time,
 	'format' => 'M j, Y H:i',
 ]);

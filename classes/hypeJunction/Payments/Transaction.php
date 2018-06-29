@@ -409,7 +409,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 			$this->amount = $data['_amount']->getAmount();
 			$this->processor_fee = $data['_processor_fee']->getAmount();
 			$this->currency = $data['_amount']->getCurrency();
-			$this->time_created = $data['_time_created'];
+			$this->time = $data['_time_created'];
 		}
 
 		if ($data['_merchant']) {
@@ -433,7 +433,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	public function toArray() {
 		$export = (array) $this->toObject();
 		$export['_id'] = $this->getId();
-		$export['_time_created'] = $this->time_created;
+		$export['_time_created'] = $this->time;
 		$export['_order'] = $this->getOrder();
 		$export['_amount'] = $this->getAmount();
 		$export['_processor_fee'] = $this->getProcessorFee();
