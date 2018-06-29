@@ -1,3 +1,13 @@
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/hypeJunctionPro/Elgg3-hypePayments/compare/3.0.0...3.1.0) (2018-06-29)
+
+
+### Features
+
+* **core:** updates and fixes ([9b8a052](https://github.com/hypeJunctionPro/Elgg3-hypePayments/commit/9b8a052))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/hypeJunctionPro/Elgg3-hypePayments/compare/2.0.13...3.0.0) (2018-03-19)
 
