@@ -1,3 +1,13 @@
+<a name="3.1.1"></a>
+## [3.1.1](https://github.com/hypeJunctionPro/Elgg3-hypePayments/compare/3.1.0...3.1.1) (2018-07-07)
+
+
+### Bug Fixes
+
+* **css:** extend a component instead of the main css ([e3a74cd](https://github.com/hypeJunctionPro/Elgg3-hypePayments/commit/e3a74cd))
+
+
+
 <a name="3.1.0"></a>
 # [3.1.0](https://github.com/hypeJunctionPro/Elgg3-hypePayments/compare/3.0.0...3.1.0) (2018-06-29)
 
