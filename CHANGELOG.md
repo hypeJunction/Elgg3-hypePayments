@@ -1,3 +1,13 @@
+<a name="3.2.1"></a>
+## [3.2.1](https://github.com/hypeJunctionPro/Elgg3-hypePayments/compare/3.2.0...3.2.1) (2018-08-09)
+
+
+### Bug Fixes
+
+* **currency:** fix input with only 1 available currency ([50d1303](https://github.com/hypeJunctionPro/Elgg3-hypePayments/commit/50d1303))
+
+
+
 <a name="3.2.0"></a>
 # [3.2.0](https://github.com/hypeJunctionPro/Elgg3-hypePayments/compare/3.1.1...3.2.0) (2018-08-09)
 
