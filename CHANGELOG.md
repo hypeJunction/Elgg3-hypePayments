@@ -1,3 +1,13 @@
+<a name="3.2.0"></a>
+# [3.2.0](https://github.com/hypeJunctionPro/Elgg3-hypePayments/compare/3.1.1...3.2.0) (2018-08-09)
+
+
+### Features
+
+* **sources:** allow gateways to add existing sources to payment method input ([9ec24e0](https://github.com/hypeJunctionPro/Elgg3-hypePayments/commit/9ec24e0))
+
+
+
 <a name="3.1.1"></a>
 ## [3.1.1](https://github.com/hypeJunctionPro/Elgg3-hypePayments/compare/3.1.0...3.1.1) (2018-07-07)
 
