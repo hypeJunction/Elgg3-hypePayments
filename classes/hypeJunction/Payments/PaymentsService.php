@@ -2,11 +2,13 @@
 
 namespace hypeJunction\Payments;
 
+use Elgg\Di\ServiceFacade;
 use Elgg\PluginHooksService;
-use hypeJunction\PayPal\API\Adapter;
 use Money\Currency;
 
 class PaymentsService {
+
+	use ServiceFacade;
 
 	/**
 	 * @var PluginHooksService
@@ -25,6 +27,13 @@ class PaymentsService {
 	 */
 	public function __construct(PluginHooksService $hooks) {
 		$this->hooks = $hooks;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public static function name() {
+		return 'payments';
 	}
 
 	/**
@@ -91,5 +100,25 @@ class PaymentsService {
 	 */
 	public function getGateways() {
 		return array_values($this->gateways);
+	}
+
+	/**
+	 * Get payment sources for the user
+	 *
+	 * @param \ElggUser $user User
+	 *
+	 * @return PaymentSource[]
+	 */
+	public function getSources(\ElggUser $user = null) {
+		if (!isset($user)) {
+			$user = elgg_get_logged_in_user_entity();
+		}
+
+		return $this->hooks->trigger(
+			'payments:sources',
+			'user',
+			['entity' => $user],
+			[]
+		);
 	}
 }
