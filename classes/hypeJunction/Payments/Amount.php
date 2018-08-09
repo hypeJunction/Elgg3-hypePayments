@@ -99,10 +99,12 @@ class Amount implements \Serializable {
 	 * @return Amount[]
 	 */
 	public function extractPercentage($percentage) {
-		$extract = (new Money($this->getAmount(), new Currency($this->getCurrency())))->allocate([$percentage]);
+		$extract = (new Money($this->getAmount(), new Currency($this->getCurrency())))
+			->allocate([$percentage, 100 - $percentage]);
+
 		return [
-			'subtotal' => new Amount($extract['subtotal']->getAmount(), $this->getCurrency()),
-			'percentage' => new Amount($extract['percentage']->getAmount(), $this->getCurrency()),
+			'subtotal' => new Amount((int) $extract[1]->getAmount(), $this->getCurrency()),
+			'percentage' => new Amount((int) $extract[0]->getAmount(), $this->getCurrency()),
 		];
 	}
 
