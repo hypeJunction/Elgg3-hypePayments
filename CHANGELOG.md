@@ -1,3 +1,13 @@
+<a name="3.2.2"></a>
+## [3.2.2](https://github.com/hypeJunctionPro/Elgg3-hypePayments/compare/3.2.1...3.2.2) (2018-08-09)
+
+
+### Bug Fixes
+
+* **amount:** correctly extract percentages ([5e51274](https://github.com/hypeJunctionPro/Elgg3-hypePayments/commit/5e51274))
+
+
+
 <a name="3.2.1"></a>
 ## [3.2.1](https://github.com/hypeJunctionPro/Elgg3-hypePayments/compare/3.2.0...3.2.1) (2018-08-09)
 
