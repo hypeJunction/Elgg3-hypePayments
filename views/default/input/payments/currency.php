@@ -10,11 +10,12 @@ $currencies = elgg()->payments->getCurrencies();
 /* @var $currencies \Money\Currency[] */
 
 if (count($currencies) == 1) {
-	if (!$vars['value']) {
-		$vars['value'] = $currencies[0]->getCode();
-	}
+	$vars['value'] = $currencies[0]->getCode();
 
 	echo elgg_view('input/hidden', $vars);
+	echo elgg_format_element('span', [
+		'class' => 'currency-input-placeholder',
+	], $currencies[0]->getCode());
 } else {
 	$vars['options_values'] = [];
 

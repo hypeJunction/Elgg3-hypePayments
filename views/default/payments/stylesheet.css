@@ -53,7 +53,8 @@
 	padding-left: 100px;
 }
 
-.elgg-input-payments-amount [data-part="currency"] {
+.elgg-input-payments-amount [data-part="currency"],
+.currency-input-placeholder {
 	position: absolute;
 	left: 0;
 	top: 0;
@@ -63,4 +64,11 @@
 	border-radius: 0;
 	padding: 0 1rem;
 	max-width: 100px;
+}
+
+.currency-input-placeholder {
+	height: 100%;
+	line-height: 40px;
+	width: 90px;
+	text-align: center;
 }
