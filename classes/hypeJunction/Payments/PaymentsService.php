@@ -2,18 +2,18 @@
 
 namespace hypeJunction\Payments;
 
-use Elgg\Di\ServiceFacade;
-use Elgg\PluginHooksService;
+
+use Elgg\EventsService;
 use Money\Currency;
 
 class PaymentsService {
 
-	use ServiceFacade;
+
 
 	/**
 	 * @var PluginHooksService
 	 */
-	protected $hooks;
+	protected $events;
 
 	/**
 	 * @var GatewayInterface[]
@@ -23,10 +23,10 @@ class PaymentsService {
 	/**
 	 * Constructor
 	 *
-	 * @param PluginHooksService $hooks Hooks
+	 * @param EventsService $events Hooks
 	 */
-	public function __construct(PluginHooksService $hooks) {
-		$this->hooks = $hooks;
+	public function __construct(EventsService $events) {
+		$this->events = $events;
 	}
 
 	/**
@@ -34,6 +34,10 @@ class PaymentsService {
 	 */
 	public static function name() {
 		return 'payments';
+	}
+
+	public static function instance(): static {
+		return elgg()->get(static::name());
 	}
 
 	/**
@@ -54,10 +58,10 @@ class PaymentsService {
 			'ZAR',
 		];
 
-		$supported_currencies = $this->hooks->trigger(
+		$supported_currencies = $this->events->triggerResults(
 			'currencies',
 			'payments',
-			null,
+			[],
 			$default_supported_currencies
 		);
 
@@ -114,7 +118,7 @@ class PaymentsService {
 			$user = elgg_get_logged_in_user_entity();
 		}
 
-		return $this->hooks->trigger(
+		return $this->events->triggerResults(
 			'payments:sources',
 			'user',
 			['entity' => $user],

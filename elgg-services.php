@@ -1,8 +1,8 @@
 <?php
 
 return [
-	'payments' => \DI\object(\hypeJunction\Payments\PaymentsService::class)
-		->constructor(\DI\get('hooks')),
+	'payments' => \DI\create(\hypeJunction\Payments\PaymentsService::class)
+		->constructor(\DI\get('events')),
 
-	'payments.storage' => \DI\object(\hypeJunction\Payments\SessionStorage::class),
+	'payments.storage' => \DI\create(\hypeJunction\Payments\SessionStorage::class),
 ];

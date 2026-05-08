@@ -160,7 +160,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 		}
 
 		$params['entity'] = $this;
-		if (elgg_trigger_plugin_hook("transaction:$status", 'payments', $params, true)) {
+		if (elgg_trigger_event_results("transaction:$status", 'payments', $params, true)) {
 			$this->status = $status;
 		}
 
@@ -235,7 +235,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	public function refund() {
 		$params = ['entity' => $this];
 
-		return elgg_trigger_plugin_hook('refund', 'payments', $params, false);
+		return elgg_trigger_event_results('refund', 'payments', $params, false);
 	}
 
 	/**
@@ -516,6 +516,6 @@ class Transaction extends ElggObject implements TransactionInterface {
 			new ViewColumn('object/transaction/payment_status'),
 		];
 
-		return elgg_trigger_plugin_hook('columns', 'object:transaction', $params, $columns);
+		return elgg_trigger_event_results('columns', 'object:transaction', $params, $columns);
 	}
 }
