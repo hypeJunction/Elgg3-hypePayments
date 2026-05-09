@@ -4,7 +4,7 @@
     <name>hypePayments</name>
     <id>hypePayments</id>
 
-    <description>Payments API</description>
+    <description>Payments API for Elgg</description>
     <category>commerce</category>
     <version type="dist">3.2.2</version>
 

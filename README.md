@@ -7,7 +7,6 @@ Payments and sales API for Elgg
  * Standardized API for handling payments and product sales
  * Interface for logging and refunding payments
 
-
 ## Usage
 
 ### New payment
