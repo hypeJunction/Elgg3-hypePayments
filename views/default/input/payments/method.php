@@ -48,7 +48,7 @@ $value = elgg_extract('value', $vars);
 							<?= elgg_view_icon('check') ?>
                         </div>
                     </div>
-                    <div class="elgg-body">
+                    <div class="payments-method-body">
                         <h3><?= $source->getLabel() ?></h3>
                     </div>
                     <div class="elgg-image-alt">
@@ -105,7 +105,7 @@ $value = elgg_extract('value', $vars);
 							<?= elgg_view_icon('check') ?>
                         </div>
                     </div>
-                    <div class="elgg-body">
+                    <div class="payments-method-body">
                         <h3><?= elgg_echo("payments:method:$id") ?></h3>
 						<?= elgg_view("payments/method/$id/info") ?>
                     </div>
