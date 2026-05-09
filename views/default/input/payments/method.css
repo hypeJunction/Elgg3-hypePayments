@@ -1,3 +1,8 @@
+:root {
+	--payments-bg-white: #fff;
+	--payments-method-border-radius: 3px;
+}
+
 .payments-method-selector input[type="radio"] {
 	display: none;
 }
@@ -7,7 +12,7 @@
 	box-shadow: 0 0 0 1px var(--elgg-border-color-mild);
 	display: block;
 	margin-bottom: 0.5rem;
-	border-radius: 3px;
+	border-radius: var(--payments-method-border-radius);
 	cursor: pointer;
 }
 
@@ -26,9 +31,9 @@
 	text-align: center;
 	vertical-align: middle;
 	border: 1px solid var(--elgg-border-color-mild);
-	border-radius: 3px;
+	border-radius: var(--payments-method-border-radius);
 	color: var(--elgg-text-color-highlight);
-	background: #fff;
+	background: var(--payments-bg-white);
 }
 
 .payments-method-selector-label .elgg-image-block {

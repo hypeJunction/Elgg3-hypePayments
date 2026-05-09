@@ -1,3 +1,13 @@
+:root {
+	--payments-bg-muted: #f1f1f1;
+	--payments-font-size-small: 90%;
+	--payments-font-size-large: 110%;
+	--payments-amount-padding-start: 100px;
+	--payments-currency-max-width: 100px;
+	--payments-currency-line-height: 40px;
+	--payments-currency-width: 90px;
+}
+
 .elgg-table .payments-transaction td img,
 .payments-table td img {
 	width: auto;
@@ -22,18 +32,18 @@
 }
 
 .payments-order-table .payments-order-subtotal {
-	font-size: 90%;
-	background: #f1f1f1;
+	font-size: var(--payments-font-size-small);
+	background: var(--payments-bg-muted);
 }
 
 .payments-order-table .payments-order-total td,
 .payments-transaction-payments-balance td {
-	font-size: 110%;
+	font-size: var(--payments-font-size-large);
 	font-weight: bold;
 }
 
 .payments-order-table .payments-order-total {
-	background: #f1f1f1;
+	background: var(--payments-bg-muted);
 }
 
 .payments-order-table .payments-order-total td:first-child {
@@ -41,7 +51,7 @@
 }
 
 .payments-order-charges-included {
-	font-size: 90%;
+	font-size: var(--payments-font-size-small);
 	font-style: italic;
 }
 
@@ -50,7 +60,7 @@
 }
 
 .elgg-input-payments-amount [data-part="amount"] {
-	padding-left: 100px;
+	padding-left: var(--payments-amount-padding-start);
 }
 
 .elgg-input-payments-amount [data-part="currency"],
@@ -63,12 +73,12 @@
 	border-right: 1px solid var(--elgg-border-color-soft);
 	border-radius: 0;
 	padding: 0 1rem;
-	max-width: 100px;
+	max-width: var(--payments-currency-max-width);
 }
 
 .currency-input-placeholder {
 	height: 100%;
-	line-height: 40px;
-	width: 90px;
+	line-height: var(--payments-currency-line-height);
+	width: var(--payments-currency-width);
 	text-align: center;
 }
