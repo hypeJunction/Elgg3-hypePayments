@@ -129,6 +129,6 @@ $value = elgg_extract('value', $vars);
 	?>
 </div>
 
-<script>
-	require(['input/payments/method']);
+<script type="module">
+	import('input/payments/method');
 </script>
