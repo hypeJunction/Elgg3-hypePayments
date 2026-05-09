@@ -60,7 +60,7 @@
 	top: 0;
 	border: none;
 	background: none;
-	border-right: 1px solid $(border-color-soft);
+	border-right: 1px solid var(--elgg-border-color-soft);
 	border-radius: 0;
 	padding: 0 1rem;
 	max-width: 100px;

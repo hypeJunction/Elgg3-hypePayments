@@ -4,7 +4,7 @@
 
 .payments-method-selector-label {
 	padding: 1rem;
-	box-shadow: 0 0 0 1px $(border-color-mild);
+	box-shadow: 0 0 0 1px var(--elgg-border-color-mild);
 	display: block;
 	margin-bottom: 0.5rem;
 	border-radius: 3px;
@@ -15,7 +15,7 @@
 	font-size: 80%;
 	font-weight: bold;
 	margin-left: 1rem;
-	color: $(text-color-highlight);
+	color: var(--elgg-text-color-highlight);
 }
 
 .payments-method-selector-checkbox {
@@ -25,9 +25,9 @@
 	padding: 0;
 	text-align: center;
 	vertical-align: middle;
-	border: 1px solid $(border-color-mild);
+	border: 1px solid var(--elgg-border-color-mild);
 	border-radius: 3px;
-	color: $(text-color-highlight);
+	color: var(--elgg-text-color-highlight);
 	background: #fff;
 }
 
@@ -45,8 +45,8 @@
 }
 
 .payments-method-selector-input:checked + .payments-method-selector-label {
-	box-shadow: 0 0 0 1px $(border-color-highlight);
-	background: $(background-color-soft);
+	box-shadow: 0 0 0 1px var(--elgg-border-color-highlight);
+	background: var(--elgg-background-color-soft);
 
 	.payments-method-selector-checkbox .elgg-icon {
 		display: inline-block;

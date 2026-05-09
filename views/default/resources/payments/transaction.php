@@ -43,7 +43,7 @@ switch ($filter_context) {
 	case 'view' :
 		$items = Menus::getTransactionMenuItems($transaction);
 		foreach ($items as $item) {
-			$item->addLinkClass('elgg-button elgg-button-action');
+			$item->addLinkClass('elgg-button');
 			elgg_register_menu_item('title', $item);
 		}
 		break;

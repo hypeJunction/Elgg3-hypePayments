@@ -335,13 +335,10 @@ class Order implements OrderInterface {
 
 		if ($data['_merchant']) {
 			$merchant = get_entity($data['_merchant']['_id']);
-			if (!$merchant) {
-				$merchant = new ElggObject();
-				$merchant->email = $data['_merchant']['_email'];
-				$merchant->title = $data['_merchant']['_title'];
-				$merchant->description = $data['_merchant']['_description'];
+			if ($merchant) {
+				$this->setMerchant($merchant);
 			}
-			$this->setMerchant($merchant);
+			// When the merchant entity no longer exists, getMerchant() falls back to the site entity
 		}
 
 		if ($data['_customer']) {
