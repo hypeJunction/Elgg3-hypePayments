@@ -63,7 +63,6 @@ $response = $adapter->pay($transaction);
 
 ```
 
-
 ## Compatibility
 
 | Plugin version | Elgg version |
