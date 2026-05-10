@@ -2,7 +2,7 @@
     "name": "hypejunction/hypepayments",
     "type": "elgg-plugin",
     "description": "Payments API for Elgg",
-    "homepage": "https://github.com/hypeJunction/hypepayments",
+    "homepage": "https://github.com/hypeJunction/Elgg3-hypePayments",
     "keywords": [
         "elgg",
         "plugin",
@@ -11,8 +11,8 @@
     "license": "GPL-2.0-or-later",
     "authors": [
         {
-            "name": "hypeJunction",
-            "homepage": "https://github.com/hypeJunction"
+            "name": "Ismayil Khayredinov",
+            "email": "ismayil.khayredinov@gmail.com"
         }
     ],
     "require": {
@@ -23,7 +23,7 @@
         "moneyphp/money": "^4.0"
     },
     "extra": {
-        "installer-name": "hypePayments"
+        "installer-name": "hypepayments"
     },
     "config": {
         "allow-plugins": {
@@ -34,5 +34,6 @@
         "psr-0": {
             "": "classes/"
         }
-    }
+    },
+    "version": "3.2.2"
 }
