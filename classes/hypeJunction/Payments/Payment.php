@@ -4,55 +4,93 @@ namespace hypeJunction\Payments;
 
 class Payment implements PaymentInterface {
 
-	protected $amount;
-	protected $payment_method;
-	protected $reason;
-	protected $time_created;
+	/** @var mixed */
+    protected $amount;
+	/** @var mixed */
+    protected $payment_method;
+	/** @var mixed */
+    protected $reason;
+	/** @var mixed */
+    protected $time_created;
 
-	public function getAmount() {
+	/**
+     * @return mixed
+     */
+    public function getAmount() {
 		if (!$this->amount) {
 			return new Amount(0, 'EUR');
 		}
 		return $this->amount;
 	}
 
-	public function getPaymentMethod() {
+	/**
+     * @return mixed
+     */
+    public function getPaymentMethod() {
 		return $this->payment_method;
 	}
 
-	public function getDescription() {
+	/**
+     * @return mixed
+     */
+    public function getDescription() {
 		return $this->reason;
 	}
 
-	public function getTimeCreated() {
+	/**
+     * @return mixed
+     */
+    public function getTimeCreated() {
 		return $this->time_created;
 	}
 
-	public function setAmount(Amount $amount) {
+	/**
+     * @param Amount $amount
+     * @return mixed
+     */
+    public function setAmount(Amount $amount) {
 		$this->amount = $amount;
 		return $this;
 	}
 
-	public function setPaymentMethod($payment_method) {
+	/**
+     * @param mixed $payment_method
+     * @return mixed
+     */
+    public function setPaymentMethod($payment_method) {
 		$this->payment_method = $payment_method;
 		return $this;
 	}
 
-	public function setDescription($reason) {
+	/**
+     * @param mixed $reason
+     * @return mixed
+     */
+    public function setDescription($reason) {
 		$this->reason = $reason;
 		return $this;
 	}
 
-	public function setTimeCreated($time) {
+	/**
+     * @param mixed $time
+     * @return mixed
+     */
+    public function setTimeCreated($time) {
 		$this->time_created = $time;
 		return $this;
 	}
 
-	public function serialize() {
+	/**
+     * @return mixed
+     */
+    public function serialize() {
 		return serialize(get_object_vars($this));
 	}
 
-	public function unserialize($serialized) {
+	/**
+     * @param mixed $serialized
+     */
+    public function unserialize($serialized) {
 		$data = unserialize($serialized);
 		foreach ($data as $key => $value) {
 			$this->$key = $value;

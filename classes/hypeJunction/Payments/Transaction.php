@@ -193,10 +193,10 @@ class Transaction extends ElggObject implements TransactionInterface {
 			return $order;
 		}
 
-		elgg_log("
+		elgg()->logger->error("
 				Order information for transaction $this->transaction_id is corrupted:
 				$this->order
-			", 'ERROR');
+			");
 
 		return false;
 	}
@@ -329,7 +329,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 				The amount has been defaulted to 0 EUR to prevent code termination.
 				Please review the transaction logs and remove or update the transaction.
 			";
-			elgg_log($msg, 'ERROR');
+			elgg()->logger->error($msg);
 			elgg_add_admin_notice("corrupted_transaction_{$this->guid}", $msg);
 
 			return new Amount(0, 'EUR');

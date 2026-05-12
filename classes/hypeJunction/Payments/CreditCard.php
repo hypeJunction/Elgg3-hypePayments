@@ -4,24 +4,38 @@ namespace hypeJunction\Payments;
 
 class CreditCard implements FundingSourceInterface {
 
-	public $id;
-	public $last4;
-	public $brand;
-	public $exp_month;
-	public $exp_year;
+	/** @var mixed */
+    public $id;
+	/** @var mixed */
+    public $last4;
+	/** @var mixed */
+    public $brand;
+	/** @var mixed */
+    public $exp_month;
+	/** @var mixed */
+    public $exp_year;
 
-	public function serialize() {
+	/**
+     * @return mixed
+     */
+    public function serialize() {
 		return serialize(get_object_vars($this));
 	}
 
-	public function unserialize($serialized) {
+	/**
+     * @param mixed $serialized
+     */
+    public function unserialize($serialized) {
 		$data = unserialize($serialized);
 		foreach ($data as $key => $value) {
 			$this->$key = $value;
 		}
 	}
 
-	public function format() {
+	/**
+     * @return mixed
+     */
+    public function format() {
 		return elgg_view('payments/credit_card', [
 			'credit_card' => $this,
 		]);

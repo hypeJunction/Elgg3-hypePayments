@@ -65,7 +65,7 @@ class PaymentsService {
 			try {
 				$currencies[] = new Currency($currency);
 			} catch (\Exception $ex) {
-				elgg_log("Unknown currency code '$currency'", 'ERROR');
+				elgg()->logger->error("Unknown currency code '$currency'");
 			}
 		}
 

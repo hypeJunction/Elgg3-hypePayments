@@ -6,7 +6,11 @@ use Elgg\Hook;
 
 class PageMenu {
 
-	public function __invoke(Hook $hook) {
+	/**
+     * @param Hook $hook
+     * @return mixed
+     */
+    public function __invoke(Hook $hook) {
 
 		$menu = $hook->getValue();
 

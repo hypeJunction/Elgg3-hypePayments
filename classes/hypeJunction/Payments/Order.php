@@ -160,7 +160,10 @@ class Order implements OrderInterface {
 		return $this;
 	}
 
-	public function getBillingAddress() {
+	/**
+     * @return mixed
+     */
+    public function getBillingAddress() {
 		return $this->billing_address;
 	}
 
