@@ -82,8 +82,8 @@ class MigrateFilesToMetadata implements Batch {
 	 * @param int    $offset Number to skip when processing
 	 *
 	 * @return Result Instance of \Elgg\Upgrade\Result
-	 * @throws \IOException
-	 * @throws \InvalidParameterException
+	 * @throws \Elgg\Exceptions\FileSystem\IOException
+	 * @throws \Elgg\Exceptions\InvalidParameterException
 	 */
 	public function run(Result $result, $offset) {
 

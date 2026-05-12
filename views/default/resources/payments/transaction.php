@@ -11,7 +11,7 @@ $filter_context = elgg_extract('filter', $vars, 'view');
 
 $transaction = Transaction::getFromId($id);
 if (!$transaction instanceof Transaction) {
-	throw new \Elgg\EntityNotFoundException();
+	throw new \Elgg\Exceptions\Http\EntityNotFoundException();
 }
 
 $user = $transaction->getCustomer();
@@ -56,7 +56,7 @@ $vars['filter_context'] = $filter_context;
 
 $content = elgg_view("payments/transactions/$filter_context", $vars);
 if (!$content) {
-	throw new \Elgg\PageNotFoundException();
+	throw new \Elgg\Exceptions\Http\PageNotFoundException();
 }
 
 if (elgg_is_xhr()) {

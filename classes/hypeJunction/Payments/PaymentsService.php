@@ -2,7 +2,7 @@
 
 namespace hypeJunction\Payments;
 
-use Elgg\Di\ServiceFacade;
+use Elgg\Traits\Di\ServiceFacade;
 use Elgg\PluginHooksService;
 use Money\Currency;
 

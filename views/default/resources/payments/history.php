@@ -8,11 +8,11 @@ $request = elgg_extract('request', $vars);
 
 $user = $request->getUserParam('guid');
 if (!$user) {
-	throw new \Elgg\EntityNotFoundException();
+	throw new \Elgg\Exceptions\Http\EntityNotFoundException();
 }
 
 if (!$user->canEdit()) {
-	throw new \Elgg\EntityPermissionsException();
+	throw new \Elgg\Exceptions\Http\EntityPermissionsException();
 }
 
 
@@ -23,7 +23,7 @@ $collection = $collections->build($request->getRoute(), $user, $request->getPara
 /* @var $collection \hypeJunction\Lists\CollectionInterface */
 
 if (!$collection) {
-	throw new \Elgg\PageNotFoundException();
+	throw new \Elgg\Exceptions\Http\PageNotFoundException();
 }
 
 $content = elgg_call(ELGG_IGNORE_ACCESS, function() use ($collection) {
