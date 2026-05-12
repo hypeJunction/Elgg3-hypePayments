@@ -1,33 +1,33 @@
 {
-    "name": "hypejunction/hypepayments",
-    "type": "elgg-plugin",
-    "description": "Payments API for Elgg",
-    "homepage": "https://github.com/hypeJunction/hypepayments",
-    "keywords": [
-        "elgg",
-        "plugin",
-        "payments"
-    ],
-    "license": "GPL-2.0-or-later",
-    "authors": [
-        {
-            "name": "hypeJunction",
-            "homepage": "https://github.com/hypeJunction"
-        }
-    ],
-    "require": {
-        "php": ">=5.6",
-        "elgg/elgg": "^3.0",
-        "composer/installers": "~1.0",
-        "moneyphp/money": "^3.1",
-        "hypejunction/acl_builder_api": "^1.1"
-    },
-    "extra": {
-        "installer-name": "hypePayments"
-    },
-    "autoload": {
-        "psr-0": {
-            "": "classes/"
-        }
-    }
+	"name": "hypejunction/hypepayments",
+	"type": "elgg-plugin",
+	"description": "Payments API for Elgg",
+	"homepage": "https://github.com/hypeJunction/hypepayments",
+	"keywords": [
+		"elgg",
+		"plugin",
+		"payments"
+	],
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "hypeJunction",
+			"homepage": "https://github.com/hypeJunction"
+		}
+	],
+	"require": {
+		"composer/installers": "~1.0",
+		"php": ">=8.1",
+		"elgg/elgg": "~5.1.0",
+		"moneyphp/money": "^3.1",
+		"hypejunction/acl_builder_api": "^1.1"
+	},
+	"extra": {
+		"installer-name": "hypePayments"
+	},
+	"autoload": {
+		"psr-0": {
+			"": "classes/"
+		}
+	}
 }
