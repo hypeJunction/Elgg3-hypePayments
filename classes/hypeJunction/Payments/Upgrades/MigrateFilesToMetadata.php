@@ -1,9 +1,11 @@
 <?php
 
-namespace hypeJunction\Payments;
+namespace hypeJunction\Payments\Upgrades;
 
 use Elgg\Upgrade\Batch;
 use Elgg\Upgrade\Result;
+use hypeJunction\Payments\Amount;
+use hypeJunction\Payments\Transaction;
 
 /**
  * Migrate transaction storage from files to metadata
