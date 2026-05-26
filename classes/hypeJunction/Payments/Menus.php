@@ -22,19 +22,19 @@ class Menus {
 		if ($status == TransactionInterface::STATUS_PAID && $transaction->canEdit()) {
 			$items[] = ElggMenuItem::factory([
 				'name' => 'refund',
-				'text' => elgg_echo('payments:refund'),
-				'href' => elgg_generate_action_url('transactions/refund', [
+				'text' => \elgg_echo('payments:refund'),
+				'href' => \elgg_generate_action_url('transactions/refund', [
 					'guid' => $transaction->guid,
 				]),
-				'confirm' => elgg_echo('payments:refund:confirm'),
+				'confirm' => \elgg_echo('payments:refund:confirm'),
 			]);
 		}
 
 		if ($transaction->canEdit()) {
 			$items[] = ElggMenuItem::factory([
 				'name' => 'log_payment',
-				'text' => elgg_echo('payments:transaction:log_payment'),
-				'href' => elgg_generate_entity_url($transaction, 'view', null, [
+				'text' => \elgg_echo('payments:transaction:log_payment'),
+				'href' => \elgg_generate_entity_url($transaction, 'view', null, [
 					'filter' => 'log_payment',
 				]),
 			]);

@@ -19,7 +19,7 @@ trait EntityLoader {
 			return false;
 		}
 
-		$rows = elgg_get_entities([
+		$rows = \elgg_get_entities([
 			'guids' => $guid,
 			'limit' => 1,
 			'callback' => false,

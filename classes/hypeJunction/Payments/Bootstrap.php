@@ -14,8 +14,8 @@ class Bootstrap extends DefaultPluginBootstrap {
 	}
 
 	public function init(): void {
-		elgg_register_event_handler('permissions_check', 'object', [Permissions::class, 'canEdit']);
-		elgg_register_event_handler('permissions_check:delete', 'object', [Permissions::class, 'canDelete']);
-		elgg_register_event_handler('seeds', 'database', [Seeder::class, 'addSeed']);
+		\elgg_register_event_handler('permissions_check', 'object', [Permissions::class, 'canEdit']);
+		\elgg_register_event_handler('permissions_check:delete', 'object', [Permissions::class, 'canDelete']);
+		\elgg_register_event_handler('seeds', 'database', [Seeder::class, 'addSeed']);
 	}
 }

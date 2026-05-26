@@ -65,7 +65,7 @@ class MigrateFilesToMetadata implements Batch {
 	 * @return int
 	 */
 	public function countItems() {
-		return elgg_get_entities([
+		return \elgg_get_entities([
 			'types' => 'object',
 			'subtypes' => Transaction::SUBTYPE,
 			'count' => true,
@@ -87,9 +87,9 @@ class MigrateFilesToMetadata implements Batch {
 	 */
 	public function run(Result $result, $offset) {
 
-		$site = elgg_get_site_entity();
+		$site = \elgg_get_site_entity();
 
-		$transactions = elgg_get_entities([
+		$transactions = \elgg_get_entities([
 			'types' => 'object',
 			'subtypes' => Transaction::SUBTYPE,
 			'limit' => 10,
