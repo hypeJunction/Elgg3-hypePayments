@@ -15,7 +15,7 @@ class BootstrapTest extends IntegrationTestCase {
 	public function down(): void {}
 
 	public function testPluginIsActive(): void {
-		$plugin = elgg_get_plugin_from_id('hypepayments');
+		$plugin = \elgg_get_plugin_from_id('hypepayments');
 		$this->assertInstanceOf(\ElggPlugin::class, $plugin);
 		$this->assertTrue($plugin->isActive());
 	}
@@ -29,15 +29,15 @@ class BootstrapTest extends IntegrationTestCase {
 	}
 
 	public function testPermissionsCheckEventHandlerExists(): void {
-		$this->assertTrue(_elgg_services()->events->hasHandler('permissions_check', 'object'));
+		$this->assertTrue(\_elgg_services()->events->hasHandler('permissions_check', 'object'));
 	}
 
 	public function testPermissionsCheckDeleteEventHandlerExists(): void {
-		$this->assertTrue(_elgg_services()->events->hasHandler('permissions_check:delete', 'object'));
+		$this->assertTrue(\_elgg_services()->events->hasHandler('permissions_check:delete', 'object'));
 	}
 
 	public function testPageMenuEventHandlerExists(): void {
-		$this->assertTrue(_elgg_services()->events->hasHandler('register', 'menu:page'));
+		$this->assertTrue(\_elgg_services()->events->hasHandler('register', 'menu:page'));
 	}
 
 	public function testGetCurrenciesReturnsArray(): void {
@@ -48,13 +48,13 @@ class BootstrapTest extends IntegrationTestCase {
 	}
 
 	public function testTransactionActionIsRegistered(): void {
-		$actions = _elgg_services()->actions->getAllActions();
+		$actions = \_elgg_services()->actions->getAllActions();
 		$this->assertArrayHasKey('transactions/refund', $actions);
 		$this->assertArrayHasKey('transactions/log_payment', $actions);
 	}
 
 	public function testRoutePaymentsHistoryIsRegistered(): void {
-		$url = elgg_generate_url('collection:object:transaction:customer', ['guid' => 1]);
+		$url = \elgg_generate_url('collection:object:transaction:customer', ['guid' => 1]);
 		$this->assertNotEmpty($url);
 	}
 }

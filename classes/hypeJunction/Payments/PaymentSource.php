@@ -62,7 +62,7 @@ class PaymentSource {
 	 * @return string|null
 	 */
 	public function getLabel() {
-		return elgg_extract('label', $this->options, $this->id);
+		return \elgg_extract('label', $this->options, $this->id);
 	}
 
 	/**
@@ -70,6 +70,6 @@ class PaymentSource {
 	 * @return string|null
 	 */
 	public function getIconURL() {
-		return elgg_extract('icon', $this->options);
+		return \elgg_extract('icon', $this->options);
 	}
 }

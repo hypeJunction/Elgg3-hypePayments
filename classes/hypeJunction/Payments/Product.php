@@ -98,7 +98,7 @@ abstract class Product extends ElggObject implements ProductInterface {
 	 * @return int
 	 */
 	public function getStock() {
-		return (int) elgg_get_annotations([
+		return (int) \elgg_get_annotations([
 					'guids' => (int) $this->guid,
 					'annotation_names' => 'quantity',
 					'annotation_calculation' => 'sum',

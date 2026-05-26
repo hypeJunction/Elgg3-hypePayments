@@ -122,7 +122,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 			return $transaction;
 		}
 
-		$transactions = elgg_get_entities([
+		$transactions = \elgg_get_entities([
 			'types' => 'object',
 			//'subtypes' => self::SUBTYPE,
 			'metadata_name_value_pairs' => [
@@ -160,7 +160,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 		}
 
 		$params['entity'] = $this;
-		if (elgg_trigger_event_results("transaction:$status", 'payments', $params, true)) {
+		if (\elgg_trigger_event_results("transaction:$status", 'payments', $params, true)) {
 			$this->status = $status;
 		}
 
@@ -193,7 +193,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 			return $order;
 		}
 
-		elgg_log("
+		\elgg_log("
 				Order information for transaction $this->transaction_id is corrupted:
 				$this->order
 			", 'ERROR');
@@ -235,7 +235,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 	public function refund() {
 		$params = ['entity' => $this];
 
-		return elgg_trigger_event_results('refund', 'payments', $params, false);
+		return \elgg_trigger_event_results('refund', 'payments', $params, false);
 	}
 
 	/**
@@ -258,7 +258,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 			return $this->customer;
 		}
 
-		$customer = elgg_get_entities([
+		$customer = \elgg_get_entities([
 			'relationship' => 'customer',
 			'relationship_guid' => $this->guid,
 			'inverse_relationship' => true,
@@ -292,7 +292,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 			return $this->merchant;
 		}
 
-		$merchant = elgg_get_entities([
+		$merchant = \elgg_get_entities([
 			'relationship' => 'merchant',
 			'relationship_guid' => $this->guid,
 			'inverse_relationship' => true,
@@ -329,8 +329,8 @@ class Transaction extends ElggObject implements TransactionInterface {
 				The amount has been defaulted to 0 EUR to prevent code termination.
 				Please review the transaction logs and remove or update the transaction.
 			";
-			elgg_log($msg, 'ERROR');
-			elgg_add_admin_notice("corrupted_transaction_{$this->guid}", $msg);
+			\elgg_log($msg, 'ERROR');
+			\elgg_add_admin_notice("corrupted_transaction_{$this->guid}", $msg);
 
 			return new Amount(0, 'EUR');
 		}
@@ -460,7 +460,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 		} else if ($val instanceof ElggEntity) {
 			$export = (array) $val->toObject();
 			if (isset($export['description'])) {
-				$export['description'] = elgg_get_excerpt($export['description'], 1000);
+				$export['description'] = \elgg_get_excerpt($export['description'], 1000);
 			}
 			$export['_id'] = $val->guid;
 			$val = $export;
@@ -485,7 +485,7 @@ class Transaction extends ElggObject implements TransactionInterface {
 			return $this->details;
 		}
 
-		return elgg_extract($name, $this->details);
+		return \elgg_extract($name, $this->details);
 	}
 
 	/**
@@ -516,6 +516,6 @@ class Transaction extends ElggObject implements TransactionInterface {
 			new ViewColumn('object/transaction/payment_status'),
 		];
 
-		return elgg_trigger_event_results('columns', 'object:transaction', $params, $columns);
+		return \elgg_trigger_event_results('columns', 'object:transaction', $params, $columns);
 	}
 }

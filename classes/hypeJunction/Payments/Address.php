@@ -20,7 +20,7 @@ class Address implements \Serializable {
 
 		$country = '';
 		if ($this->country_code) {
-			$country = elgg_echo("country:$this->country_code");
+			$country = \elgg_echo("country:$this->country_code");
 		}
 
 		$rows = [];

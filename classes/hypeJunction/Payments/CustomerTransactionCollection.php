@@ -19,7 +19,7 @@ class CustomerTransactionCollection extends Collection {
 	 * @return string
 	 */
 	public function getDisplayName() {
-		return elgg_echo('collection:object:transaction');
+		return \elgg_echo('collection:object:transaction');
 	}
 
 	/**
@@ -74,7 +74,7 @@ class CustomerTransactionCollection extends Collection {
 			'columns' => \hypeJunction\Payments\Transaction::getTableColumns(),
 			'list_class' => 'payments-transactions',
 			'item_class' => 'payments-transaction',
-			'no_results' => elgg_echo('payments:transactions:no_results'),
+			'no_results' => \elgg_echo('payments:transactions:no_results'),
 		]);
 	}
 
@@ -84,7 +84,7 @@ class CustomerTransactionCollection extends Collection {
 	 * @return string
 	 */
 	public function getURL() {
-		return elgg_generate_url($this->getId(), [
+		return \elgg_generate_url($this->getId(), [
 			'guid' => $this->getTarget()->guid,
 		]);
 	}
