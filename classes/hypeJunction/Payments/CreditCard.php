@@ -36,7 +36,7 @@ class CreditCard implements FundingSourceInterface {
      * @return mixed
      */
     public function format() {
-		return elgg_view('payments/credit_card', [
+		return \elgg_view('payments/credit_card', [
 			'credit_card' => $this,
 		]);
 	}

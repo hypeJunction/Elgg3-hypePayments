@@ -15,7 +15,7 @@ class Permissions {
 	 */
 	public static function canEdit($hook, $type, $return, $params) {
 
-		$entity = elgg_extract('entity', $params);
+		$entity = \elgg_extract('entity', $params);
 		if (!$entity instanceof Transaction) {
 			return;
 		}
@@ -40,7 +40,7 @@ class Permissions {
 	 */
 	public static function canDelete($hook, $type, $return, $params) {
 
-		$entity = elgg_extract('entity', $params);
+		$entity = \elgg_extract('entity', $params);
 
 		if (!$entity instanceof Transaction) {
 			return;

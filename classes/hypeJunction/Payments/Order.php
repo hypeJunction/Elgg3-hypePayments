@@ -285,7 +285,7 @@ class Order implements OrderInterface {
 	 * {@inheritdoc}
 	 */
 	public function getMerchant() {
-		return $this->merchant ? : elgg_get_site_entity();
+		return $this->merchant ? : \elgg_get_site_entity();
 	}
 
 	/**
@@ -300,7 +300,7 @@ class Order implements OrderInterface {
 	 * {@inheritdoc}
 	 */
 	public function getCustomer() {
-		return $this->customer ? : elgg_get_logged_in_user_entity();
+		return $this->customer ? : \elgg_get_logged_in_user_entity();
 	}
 
 	/**

@@ -22,15 +22,15 @@ class LogPayment {
 		$entity = get_entity($guid);
 
 		if (!$entity instanceof Transaction) {
-			$error = elgg_echo('payments:error:not_found');
+			$error = \elgg_echo('payments:error:not_found');
 
-			return elgg_error_response($error, REFERRER, ELGG_HTTP_NOT_FOUND);
+			return \elgg_error_response($error, REFERRER, ELGG_HTTP_NOT_FOUND);
 		}
 
 		if (!$entity->canEdit()) {
-			$error = elgg_echo('payments:error:permissions');
+			$error = \elgg_echo('payments:error:permissions');
 
-			return elgg_error_response($error, REFERRER, ELGG_HTTP_FORBIDDEN);
+			return \elgg_error_response($error, REFERRER, ELGG_HTTP_FORBIDDEN);
 		}
 
 		$type = get_input('type');
@@ -42,9 +42,9 @@ class LogPayment {
 		if ($type == 'refund') {
 			$amount = (float) $amount;
 			$amount = (string) -$amount;
-			$reason = elgg_echo('payments:refund');
+			$reason = \elgg_echo('payments:refund');
 		} else {
-			$reason = elgg_echo('payments:payment');
+			$reason = \elgg_echo('payments:payment');
 		}
 
 		$amount = Amount::fromString($amount, $currency);
@@ -67,10 +67,10 @@ class LogPayment {
 			'entity' => $entity,
 			'action' => 'log_payment',
 		];
-		$message = elgg_echo('payments:log_payment:success');
+		$message = \elgg_echo('payments:log_payment:success');
 		$forward_url = $entity->getURL();
 
-		return elgg_ok_response($data, $message, $forward_url);
+		return \elgg_ok_response($data, $message, $forward_url);
 
 	}
 }

@@ -86,7 +86,7 @@ class Amount implements \Serializable {
 	 * @return string
 	 */
 	public function format() {
-		return elgg_echo('payments:price', [$this->getConvertedAmount(), $this->getCurrency()]);
+		return \elgg_echo('payments:price', [$this->getConvertedAmount(), $this->getCurrency()]);
 	}
 
 	/**

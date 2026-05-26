@@ -91,7 +91,7 @@ class PaymentsService {
 	 * @return GatewayInterface|null
 	 */
 	public function getGateway($id) {
-		return elgg_extract($id, $this->gateways);
+		return \elgg_extract($id, $this->gateways);
 	}
 
 	/**
@@ -111,7 +111,7 @@ class PaymentsService {
 	 */
 	public function getSources(\ElggUser $user = null) {
 		if (!isset($user)) {
-			$user = elgg_get_logged_in_user_entity();
+			$user = \elgg_get_logged_in_user_entity();
 		}
 
 		return $this->hooks->trigger(
