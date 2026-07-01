@@ -29,10 +29,7 @@ class PaymentsService {
 		$this->events = $events;
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public static function name() {
+	public static function name(): string {
 		return 'payments';
 	}
 

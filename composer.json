@@ -31,8 +31,8 @@
         }
     },
     "autoload": {
-        "psr-0": {
-            "": "classes/"
+        "psr-4": {
+            "hypeJunction\\Payments\\": "classes/hypeJunction/Payments/"
         }
     }
 }
